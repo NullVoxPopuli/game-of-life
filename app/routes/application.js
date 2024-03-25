@@ -5,14 +5,15 @@ export default class extends Route {
   @service state;
 
   beforeModel() {
-    this.state.createBoard();
+    this.state.createBoard(20, 20);
 
     this.state.addShape({
       shape: [
-        [0, 1, 0],
-        [1, 1, 1],
+        [0, 1],
+        [1, 0],
+        [1, 0],
       ],
-      at: { x: 10, y: 10 },
+      at: { x: 0, y: 0 },
     });
   }
 }

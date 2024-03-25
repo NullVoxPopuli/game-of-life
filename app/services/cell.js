@@ -36,11 +36,10 @@ export class Cell {
     let previous = this.previous;
 
     if (!previous) {
-      return this.initial;
+      return this.manuallySet ?? false;
     }
 
     let liveNeighbors = this.neighbors.filter((n) => n.alive).length;
-
     return ai(previous, liveNeighbors);
   }
 
@@ -57,27 +56,15 @@ export class Cell {
     return `${this.#x} x ${this.#y}`;
   }
 
-  #neighbors = [];
-
-  /**
-   * This is a compute-once getter.
-   * It never needs to re-evaluate.
-   */
   get neighbors() {
-    if (this.#neighbors.length) {
-      return this.#neighbors;
-    }
-
     let { maxY, maxX, previous: board } = this.#parentState;
 
-    this.#neighbors = findNeighbors({
+    return findNeighbors({
       x: this.#x,
       y: this.#y,
       maxX,
       maxY,
       board,
     });
-
-    return this.#neighbors;
   }
 }

@@ -1,24 +1,26 @@
 import Service from '@ember/service';
 import { TrackedArray } from 'tracked-built-ins';
 import { tracked } from '@glimmer/tracking';
-import { createBoard } from './helpers';
+import { Board } from './board';
 
 // Yes, state can be this easy!
 export default class State extends Service {
-  @tracked maxY = 20;
-  @tracked maxX = 20;
-
+  @tracked maxY = 5;
+  @tracked maxX = 5;
+  @tracked _board;
   @tracked showHistory = false;
 
   history = new TrackedArray();
 
-  #board;
+  // non-component prop-drilling
+  addShape = (...args) => this._board.addShape(...args);
+  hasShape = (...args) => this._board.hasShape(...args);
+  shapeAt = (...args) => this._board.shapeAt(...args);
+  asJSON = () => this._board.toJSON();
 
   get board() {
-    return this.#board.state;
+    return this._board.state;
   }
-
-  addShape = (...args) => this.#board.addShape(...args);
 
   get previous() {
     return this.history.at(-1);
@@ -29,41 +31,23 @@ export default class State extends Service {
   };
 
   passTime = () => {
-    this.snapshot();
+    this.#snapshot();
   };
 
   toggleHistory = () => (this.showHistory = !this.showHistory);
 
-  createBoard = () => {
-    this.#board = new Board(this.maxX, this.maxY, this);
+  createBoard = (x, y) => {
+    this.maxX = x;
+    this.maxY = y;
+    this._board = new Board(x, y, this);
   };
 
-  snapshot = () => {
-    let current = this.#board.toJSON();
+  #snapshot = () => {
+    let current = this._board.toJSON();
+
+    this._board.clearManuallySet();
 
     // this is now "previous"
     this.history.push(current);
   };
-}
-
-class Board {
-  constructor(width, height, state) {
-    this.state = createBoard({ width, height, state });
-  }
-
-  at = (x, y) => this.state[y][x];
-
-  addShape = ({ shape, at }) => {
-    for (let y = 0; y < shape.length; y++) {
-      let row = shape[y];
-      for (let x = 0; x < row.length; x++) {
-        let value = row[x];
-        this.state[at.y + y][at.x + x].alive = Boolean(value);
-      }
-    }
-  };
-
-  toJSON() {
-    return this.state.map((row) => row.map((cell) => cell.toJSON()));
-  }
 }

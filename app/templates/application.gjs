@@ -1,8 +1,9 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { pageTitle } from 'ember-page-title';
-import { on } from '@ember/modifier';
 import Route from 'ember-route-template';
+
+import { Controls } from './controls';
 
 export default Route(
   <template>
@@ -56,23 +57,5 @@ class Board extends Component {
         {{/each}}
       {{/each}}
     </div>
-  </template>
-}
-
-class Controls extends Component {
-  @service state;
-
-  <template>
-    <button {{on "click" this.state.passTime}}>
-      Progress Time
-    </button>
-
-    <button {{on "click" this.state.toggleHistory}}>
-      {{#if this.state.showHistory}}
-        Hide History
-      {{else}}
-        Show History
-      {{/if}}
-    </button>
   </template>
 }

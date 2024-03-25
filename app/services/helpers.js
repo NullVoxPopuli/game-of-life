@@ -44,16 +44,7 @@ export function ai(alive, liveNeighbors) {
     return liveNeighbors === 3;
   }
 
-  if (alive) {
-    // dies of isolation
-    if (liveNeighbors === 0 || liveNeighbors === 1) return false;
-
-    // dies of overcrowding
-    if (liveNeighbors > 3) return false;
-
-    // survival
-    return liveNeighbors === 2 || liveNeighbors === 3;
-  }
+  return liveNeighbors === 2 || liveNeighbors === 3;
 }
 
 /**

@@ -11,7 +11,8 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "vite build",
+    "start": "ember serve",
+    "_build": "vite build",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
     "lint:css": "stylelint \"**/*.css\"",
     "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
@@ -23,10 +24,10 @@
     "lint:prettier": "prettier . --check",
     "lint:prettier:fix": "prettier . --write",
     "lint:types": "glint",
-    "start": "vite",
-    "start:test": "vite --open /tests/",
-    "test": "pnpm test:ember",
-    "test:ember": "node ./scripts/run-tests.mjs"
+    "_start": "vite",
+    "_start:test": "vite --open /tests/",
+    "_test": "pnpm test:ember",
+    "_test:ember": "node ./scripts/run-tests.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
@@ -120,10 +121,14 @@
   },
   "dependencies": {
     "@embroider/macros": "1.15.0",
+    "@embroider/webpack": "3.2.3-unstable.bac2415",
+    "decorator-transforms": "^1.1.0",
     "ember-modifier": "^4.1.0",
     "ember-resources": "^7.0.0",
     "ember-route-template": "^1.0.3",
-    "tracked-built-ins": "^3.3.0"
+    "tracked-built-ins": "^3.3.0",
+    "tracked-toolbox": "^2.0.0",
+    "webpack": "^5.91.0"
   },
   "volta": {
     "node": "18.17.0",

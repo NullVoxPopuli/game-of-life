@@ -1,39 +1,78 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
 import { pageTitle } from 'ember-page-title';
+import { on } from '@ember/modifier';
 import Route from 'ember-route-template';
-import { Cell, board, maxX, maxY } from './data';
-
-import { TrackedArray } from 'tracked-built-ins';
 
 export default Route(
   <template>
     {{pageTitle "Game of Life"}}
 
+    <Display />
     <Board />
+    <br />
+    <Controls />
   </template>
 );
 
-for (let y = 0; y < maxY; y++) {
-  let column = new TrackedArray();
+class Display extends Component {
+  @service state;
 
-  for (let x = 0; x < maxX; x++) {
-    column.push(new Cell(x, y));
+  get isShowingHistory() {
+    return this.state.showHistory;
   }
-  board.push(column);
+
+  <template>
+    <div class="boards">
+      <Board @board={{this.state.board}} />
+
+      {{#if this.isShowingHistory}}
+        {{#each this.state.history as |board|}}
+          <Board @board={{board}} />
+        {{/each}}
+      {{/if}}
+    </div>
+  </template>
 }
 
-const Board = <template>
-  <div
-    style="display: grid; grid-template-columns: repeat({{maxX}}, 1fr); grid-template-rows: repeat({{maxY}}, 1fr);"
-  >
-    {{#each board as |row|}}
-      {{#each row as |cell|}}
-        {{log cell}}
-        <button
-          class={{if cell.alive "alive"}}
-          onclick={{cell.toggle}}
-          aria-label="Cell for {{cell.label}}"
-        ></button>
+const not = (x) => !x;
+
+class Board extends Component {
+  @service state;
+
+  <template>
+    <div
+      class="board"
+      style="display: grid; grid-template-columns: repeat({{this.state.maxX}}, 1fr); grid-template-rows: repeat({{this.state.maxY}}, 1fr);"
+    >
+      {{#each @board as |row|}}
+        {{#each row as |cell|}}
+          <button
+            class={{if cell.alive "alive"}}
+            onclick={{cell.toggle}}
+            disabled={{not cell.toggle}}
+            aria-label="Cell for {{cell.label}}"
+          ></button>
+        {{/each}}
       {{/each}}
-    {{/each}}
-  </div>
-</template>;
+    </div>
+  </template>
+}
+
+class Controls extends Component {
+  @service state;
+
+  <template>
+    <button {{on "click" this.state.passTime}}>
+      Progress Time
+    </button>
+
+    <button {{on "click" this.state.toggleHistory}}>
+      {{#if this.state.showHistory}}
+        Hide History
+      {{else}}
+        Show History
+      {{/if}}
+    </button>
+  </template>
+}

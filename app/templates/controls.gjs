@@ -36,7 +36,13 @@ export class Controls extends Component {
       return;
     }
 
+      this.state.history.length = 0;
+
     const play = () => {
+      if (this.state.isStable) {
+        this.toggleAnimation();
+      }
+
       this.state.passTime();
       this.timeout = setTimeout(() => {
         this.frame = requestAnimationFrame(play);

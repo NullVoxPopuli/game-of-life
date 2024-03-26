@@ -9,11 +9,19 @@ export default class extends Route {
 
     this.state.addShape({
       shape: [
+        [0, 1, 0],
+        [1, 1, 1],
+      ],
+      at: { x: 5, y: 5 },
+    });
+
+    this.state.addShape({
+      shape: [
         [0, 1],
         [1, 0],
         [1, 0],
       ],
-      at: { x: 0, y: 0 },
+      at: { x: 0, y: 16 },
     });
 
     this.state.addShape({
@@ -21,7 +29,16 @@ export default class extends Route {
         [1, 1],
         [1, 1],
       ],
-      at: { x: 4, y: 10 },
+      at: { x: 16, y: 16 },
+    });
+
+    this.state.addShape({
+      shape: [
+        [0, 1, 0],
+        [0, 0, 1],
+        [1, 1, 1],
+      ],
+      at: { x: 8, y: 0 },
     });
   }
 }

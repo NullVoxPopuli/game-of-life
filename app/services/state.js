@@ -25,6 +25,10 @@ export default class State extends Service {
     return this._board.state;
   }
 
+  get isStable() {
+    return this._board.equals(this.previous);
+  }
+
   get previous() {
     return this.history.at(-1);
   }

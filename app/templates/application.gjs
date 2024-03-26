@@ -4,10 +4,13 @@ import { pageTitle } from 'ember-page-title';
 import Route from 'ember-route-template';
 
 import { Controls } from './controls';
+import { Header } from './header';
 
 export default Route(
   <template>
     {{pageTitle "Game of Life"}}
+
+    <Header />
 
     <div class="app-container">
       <Display />
@@ -69,6 +72,11 @@ const getColumns = (board) => board[0].length;
 class Board extends Component {
   @service state;
 
+  toggleISO = (event) => {
+    event.preventDefault();
+    event.currentTarget.classList.toggle('iso');
+  };
+
   <template>
     <div
       class="board"
@@ -77,6 +85,7 @@ class Board extends Component {
         --columns: {{getColumns @board}};
         --rows: {{getRows @board}};
       "
+      onauxclick={{this.toggleISO}}
       ...attributes
     >
       {{#each @board as |row|}}

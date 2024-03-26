@@ -51,6 +51,32 @@ export class Board {
     return result;
   };
 
+  /**
+   * @param {Cell[][]} anotherBoard
+   */
+  equals = (anotherBoard) => {
+    if (!anotherBoard) return false;
+
+    if (anotherBoard.length !== this.state.length) return false;
+
+    for (let y = 0; y < anotherBoard.length; y++) {
+      let row = anotherBoard[y];
+      let ourRow = this.state[y];
+
+      if (ourRow.length !== row.length) return false;
+
+      for (let x = 0; x < row.length; x++) {
+        let anotherCell = row[x];
+        let ourCell = ourRow[x];
+
+        if (!ourCell) return false;
+        if (anotherCell.alive !== ourCell.alive) return false;
+      }
+    }
+
+    return true;
+  };
+
   clearManuallySet = () => {
     this.state.forEach((row) => row.forEach((cell) => (cell.manuallySet = undefined)));
   };

@@ -16,6 +16,12 @@ body {
   overflow-y: hidden;
 }
 
+header {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}
+
 footer {
   position: fixed;
   transform: translateX(-50%);
@@ -55,6 +61,11 @@ footer input[type='number'] {
   left: 0;
   /* we will need to maintain this offset */
   transform: translateX(-50%) translateY(-50%);
+  transform-style: preserve-3d;
+}
+
+.board.iso {
+  transform: translateX(-50%) translateY(-50%) rotateX(60deg) rotateY(0deg) rotateZ(-45deg) !important;
 }
 
 
@@ -63,6 +74,7 @@ footer input[type='number'] {
   width: var(--size);
   height: var(--size);
   background: transparent;
+  transform-style: preserve-3d;
 }
 
 .board button.alive {
@@ -86,6 +98,7 @@ footer input[type='number'] {
 .boards.show-lines .board button.alive {
   border: 1px solid rgba(255,255,255,0.35);
 }
+
 
 .showing-history.boards {
   display: flex;
@@ -118,3 +131,33 @@ footer input[type='number'] {
     scale(1.2)
   ;
 }
+
+.board button.alive {
+  --d: 1.5rem;
+}
+
+.board button.alive {
+  transform:translateZ(var(--d));
+}
+.board button.alive::before,
+.board button.alive::after{
+  content:"";
+  bottom:0;
+  left:0;
+  position:absolute;
+  background:inherit;
+  border:inherit;
+}
+.board button.alive::before {
+  width:var(--d);
+  top:0;
+  transform-origin:left;
+  transform:rotateY(90deg);
+}
+.board button.alive::after {
+  height:var(--d);
+  right:0;
+  transform-origin:bottom;
+  transform:rotateX(90deg);
+}
+

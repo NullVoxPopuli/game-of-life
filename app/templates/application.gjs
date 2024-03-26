@@ -9,12 +9,29 @@ export default Route(
   <template>
     {{pageTitle "Game of Life"}}
 
-    <Display />
-    <Board />
-    <br />
-    <Controls />
+    <div class="app-container">
+      <Display />
+      <br />
+      <footer>
+        <Controls />
+      </footer>
+    </div>
   </template>
 );
+
+const addOne = (n) => n + 1;
+
+let frame;
+const scrollToRight = () => {
+  if (frame) cancelAnimationFrame(frame);
+
+  frame = requestAnimationFrame(() => {
+    document.body.parentElement.scrollTo({
+      behavior: 'smooth',
+      left: document.body.scrollWidth + 1000,
+    });
+  });
+};
 
 class Display extends Component {
   @service state;
@@ -22,21 +39,32 @@ class Display extends Component {
   get isShowingHistory() {
     return this.state.showHistory;
   }
+  get showLines() {
+    return this.state.showLines;
+  }
 
   <template>
-    <div class="boards">
-      <Board @board={{this.state.board}} />
-
+    <div
+      class="boards
+        {{if this.isShowingHistory 'showing-history'}}
+        {{if this.showLines 'show-lines'}}
+        "
+      style="--count: {{addOne this.state.history.length}}"
+    >
       {{#if this.isShowingHistory}}
-        {{#each this.state.history as |board|}}
-          <Board @board={{board}} />
+        {{#each this.state.history as |board i|}}
+          <Board @board={{board}} @index={{addOne i}} class="historical" />
+          {{(scrollToRight)}}
         {{/each}}
       {{/if}}
+
+      <Board @board={{this.state.board}} @index="var(--count)" />
     </div>
   </template>
 }
 
-const not = (x) => !x;
+const getRows = (board) => board.length;
+const getColumns = (board) => board[0].length;
 
 class Board extends Component {
   @service state;
@@ -44,16 +72,24 @@ class Board extends Component {
   <template>
     <div
       class="board"
-      style="display: grid; grid-template-columns: repeat({{this.state.maxX}}, 1fr); grid-template-rows: repeat({{this.state.maxY}}, 1fr);"
+      style="
+        --index: {{@index}};
+        --columns: {{getColumns @board}};
+        --rows: {{getRows @board}};
+      "
+      ...attributes
     >
       {{#each @board as |row|}}
         {{#each row as |cell|}}
-          <button
-            class={{if cell.alive "alive"}}
-            onclick={{cell.toggle}}
-            disabled={{not cell.toggle}}
-            aria-label="Cell for {{cell.label}}"
-          ></button>
+          {{#if cell.toggle}}
+            <button
+              class={{if cell.alive "alive"}}
+              onclick={{cell.toggle}}
+              aria-label="Cell for {{cell.label}}"
+            ></button>
+          {{else}}
+            <button class={{if cell.alive "alive"}} disabled></button>
+          {{/if}}
         {{/each}}
       {{/each}}
     </div>

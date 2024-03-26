@@ -6,7 +6,7 @@ import { on } from '@ember/modifier';
 export class Controls extends Component {
   @service state;
 
-  reset = () => this.state.createBoard(this.state.maxX, this.state.maxY);
+  reset = () => this.state.reset();
 
   changeDimensions = (event) => {
     event.preventDefault();
@@ -47,35 +47,45 @@ export class Controls extends Component {
   };
 
   <template>
-    <button {{on "click" this.toggleAnimation}}>
-      {{#if this.isPlaying}}
-        Stop
-      {{else}}
-        Play
-      {{/if}}
-    </button>
+    <div>
+      <button {{on "click" this.toggleAnimation}}>
+        {{#if this.isPlaying}}
+          Stop
+        {{else}}
+          Play
+        {{/if}}
+      </button>
 
-    <label>
-      Delay
-    <input type="number" name="delay" value={{this.delay}}
-      {{on 'input' this.updateDelay}}
-    />
-    </label>
+      <label>
+        Delay
+      <input type="number" name="delay" value={{this.delay}}
+        {{on 'input' this.updateDelay}}
+      />
+      </label>
 
-    <button {{on "click" this.state.passTime}}>
-      Progress Time
-    </button>
+      <button {{on "click" this.state.passTime}}>
+        Progress Time
+      </button>
 
-    <button {{on "click" this.state.toggleHistory}}>
-      {{#if this.state.showHistory}}
-        Hide History
-      {{else}}
-        Show History
-      {{/if}}
-    </button>
+      <button {{on "click" this.state.toggleHistory}}>
+        {{#if this.state.showHistory}}
+          Hide History
+        {{else}}
+          Show History
+        {{/if}}
+      </button>
 
-  <button {{on 'click' this.reset}}>Reset</button>
+      <button {{on "click" this.state.toggleLines}}>
+        {{#if this.state.showLines}}
+          Hide Lines
+        {{else}}
+          Show Lines
+        {{/if}}
+      </button>
 
+    <button {{on 'click' this.reset}}>Reset</button>
+
+  </div>
   <form {{on 'submit' this.changeDimensions}}>
     <label>
       Width:

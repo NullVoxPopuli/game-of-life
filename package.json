@@ -111,6 +111,9 @@
       "@embroider/util": "1.12.2-unstable.bac2415",
       "@embroider/vite": "0.2.1-unstable.bac2415",
       "@embroider/webpack": "3.2.3-unstable.bac2415"
+    },
+    "patchedDependencies": {
+      "ember-source@5.7.0": "patches/ember-source@5.7.0.patch"
     }
   },
   "engines": {
@@ -124,6 +127,7 @@
     "@embroider/webpack": "3.2.3-unstable.bac2415",
     "decorator-transforms": "^1.1.0",
     "ember-modifier": "^4.1.0",
+    "ember-primitives": "^0.14.0",
     "ember-resources": "^7.0.0",
     "ember-route-template": "^1.0.3",
     "tracked-built-ins": "^3.3.0",

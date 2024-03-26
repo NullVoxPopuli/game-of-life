@@ -1,0 +1,36 @@
+diff --git a/dist/dependencies/@glimmer/runtime.js b/dist/dependencies/@glimmer/runtime.js
+index f276fc2245fe65ceac576ad9d21da18779a64849..0797961b188b1471f3c4c03c2f6930984f29ff3a 100644
+--- a/dist/dependencies/@glimmer/runtime.js
++++ b/dist/dependencies/@glimmer/runtime.js
+@@ -574,11 +574,11 @@ let DebugStyleAttributeManager;
+ if (DEBUG) {
+   DebugStyleAttributeManager = class extends SimpleDynamicAttribute {
+     set(dom, value, env) {
+-      warnIfStyleNotTrusted(value);
++      // warnIfStyleNotTrusted(value);
+       super.set(dom, value, env);
+     }
+     update(value, env) {
+-      warnIfStyleNotTrusted(value);
++      // warnIfStyleNotTrusted(value);
+       super.update(value, env);
+     }
+   };
+diff --git a/dist/ember.debug.js b/dist/ember.debug.js
+index c70a1ab510f0e0fa3ef6d5e1075edb4ebf15d0ea..aa313805bd0cf349af5cf584241fa8f36c575949 100644
+--- a/dist/ember.debug.js
++++ b/dist/ember.debug.js
+@@ -32688,11 +32688,11 @@ define("@glimmer/runtime", ["exports", "@glimmer/debug", "@glimmer/reference", "
+   if (true /* DEBUG */) {
+     DebugStyleAttributeManager = class extends SimpleDynamicAttribute {
+       set(dom, value, env) {
+-        (0, _globalContext.warnIfStyleNotTrusted)(value);
++        // (0, _globalContext.warnIfStyleNotTrusted)(value);
+         super.set(dom, value, env);
+       }
+       update(value, env) {
+-        (0, _globalContext.warnIfStyleNotTrusted)(value);
++        // (0, _globalContext.warnIfStyleNotTrusted)(value);
+         super.update(value, env);
+       }
+     };

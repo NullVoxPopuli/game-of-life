@@ -15,5 +15,13 @@ export default class extends Route {
       ],
       at: { x: 0, y: 0 },
     });
+
+    this.state.addShape({
+      shape: [
+        [1, 1],
+        [1, 1],
+      ],
+      at: { x: 4, y: 10 },
+    });
   }
 }

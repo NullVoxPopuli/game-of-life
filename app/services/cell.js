@@ -40,7 +40,8 @@ export class Cell {
     }
 
     let liveNeighbors = this.neighbors.filter((n) => n.alive).length;
-    return ai(previous, liveNeighbors);
+
+    return ai(previous.alive, liveNeighbors);
   }
 
   get alive() {

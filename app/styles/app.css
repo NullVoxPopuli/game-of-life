@@ -2,6 +2,38 @@
   --size: 32px;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  overflow-y: hidden;
+}
+
+footer {
+  position: fixed;
+  transform: translateX(-50%);
+  left: 50%;
+  bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  z-index: 10;
+}
+
+footer input[type='number'] {
+  max-width: 50px;
+}
+
+.app-container {
+}
+
 .boards {
   position: relative;
 }
@@ -9,18 +41,80 @@
 .board {
   width: max-content;
   height: max-content;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+
+  transition: all 0.3s;
   z-index: 1;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+
+  /* makes animating easier */
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* we will need to maintain this offset */
+  transform: translateX(-50%) translateY(-50%);
 }
 
+
 .board button {
-  border: 1px solid gray;
+  border: none;
   width: var(--size);
   height: var(--size);
-  background: white;
+  background: transparent;
 }
 
 .board button.alive {
   background: black;
 }
 
+.board.historical {
+  opacity: 0.85;
+}
+.show-lines .board.historical {
+  opacity: 0.65;
+}
+
+.boards.show-lines .board button {
+  border: 1px solid rgba(0,0,0,0.15);
+  background: white;
+}
+.boards.show-lines .board button.alive {
+  background: black;
+}
+.boards.show-lines .board button.alive {
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+.showing-history.boards {
+  display: flex;
+  max-width: 100dvw;
+
+  --translateX: 25%;
+  --perspective: 1000px;
+  --rotationAmount: calc(20deg / var(--count));
+}
+
+.showing-history .board {
+  filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15));
+  left: calc(7rem * var(--index) - 30rem);
+  transform:
+    /* centering offset */
+    translateY(-50%) translateX(calc(-50% + (2rem * var(--index))))
+    perspective(var(--perspective))
+    rotateY(calc(
+      70deg * (var(--index) / var(--count))
+    ))
+    ;
+}
+
+.showing-history .board:hover {
+  opacity: 1;
+  z-index: 20;
+  transform:
+    /* centering offset */
+    translateY(-50%) translateX(calc(-50% + (2rem * var(--index))))
+    scale(1.2)
+  ;
+}

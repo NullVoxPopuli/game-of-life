@@ -8,9 +8,7 @@ module('State', function (hooks) {
 
   hooks.beforeEach(function () {
     state = this.owner.lookup('service:state');
-    state.maxX = 5;
-    state.maxY = 5;
-    state.createBoard();
+    state.createBoard(5, 5);
   });
 
   test('with no seed, is stable', function (assert) {

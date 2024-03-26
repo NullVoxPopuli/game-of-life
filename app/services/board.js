@@ -2,7 +2,6 @@ import { createBoard } from './helpers';
 
 export class Board {
   constructor(width, height, state) {
-    this.history = state.history;
     this.state = createBoard({ width, height, state });
   }
 

@@ -24,16 +24,16 @@ export default Route(
 
 const addOne = (n) => n + 1;
 
-let frame;
+// let frame;
 const scrollToRight = () => {
-  if (frame) cancelAnimationFrame(frame);
+  // if (frame) cancelAnimationFrame(frame);
 
-  frame = requestAnimationFrame(() => {
-    document.body.parentElement.scrollTo({
-      behavior: 'smooth',
-      left: document.body.scrollWidth + 1000,
-    });
+  // frame = requestAnimationFrame(() => {
+  document.body.parentElement.scrollTo({
+    behavior: 'instant',
+    left: document.body.scrollWidth,
   });
+  // });
 };
 
 class Display extends Component {
@@ -91,7 +91,8 @@ class Board extends Component {
             <button
               class={{if cell.alive "alive"}}
               onclick={{cell.toggle}}
-              aria-label="Cell for {{cell.label}}" type="button"
+              aria-label="Cell for {{cell.label}}"
+              type="button"
             ></button>
           {{else}}
             <button class={{if cell.alive "alive"}} disabled type="button"></button>

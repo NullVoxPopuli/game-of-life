@@ -69,6 +69,7 @@ footer input[type="number"] {
   transform: translateX(-50%) translateY(-50%) rotateX(60deg) rotateY(0deg) rotateZ(-45deg) !important;
 }
 
+
 .board button {
   border: none;
   width: var(--size);
@@ -81,8 +82,16 @@ footer input[type="number"] {
   background: black;
 }
 
+.showing-history .board {
+  transition: none 0.0s;
+}
+.showing-history .board.historical {
+  transition: all 0.3s;
+}
+
 .board.historical {
   opacity: 0.85;
+
 }
 .show-lines .board.historical {
   opacity: 0.65;
@@ -102,6 +111,7 @@ footer input[type="number"] {
 .showing-history.boards {
   display: flex;
   max-width: 100dvw;
+  padding-right: calc(9rem* var(--count));
 
   --translateX: 25%;
   --perspective: 1000px;
@@ -114,7 +124,7 @@ footer input[type="number"] {
   transform:
     /* centering offset */ translateY(-50%)
     translateX(calc(-50% + (2rem * var(--index)))) perspective(var(--perspective))
-    rotateY(calc(70deg * (var(--index) / var(--count))));
+    rotateY(calc(40deg * (var(--index) / var(--count))));
 }
 
 .showing-history .board:hover {

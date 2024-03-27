@@ -38,12 +38,13 @@ const scrollToRight = () => {
 
 class Display extends Component {
   @service state;
+  @service display;
 
   get isShowingHistory() {
-    return this.state.showHistory;
+    return this.display.showHistory;
   }
   get showLines() {
-    return this.state.showLines;
+    return this.display.showLines;
   }
 
   <template>
@@ -71,11 +72,7 @@ const getColumns = (board) => board[0].length;
 
 class Board extends Component {
   @service state;
-
-  toggleISO = (event) => {
-    event.preventDefault();
-    event.currentTarget.classList.toggle('iso');
-  };
+  @service display;
 
   <template>
     <div
@@ -85,7 +82,7 @@ class Board extends Component {
         --columns: {{getColumns @board}};
         --rows: {{getRows @board}};
       "
-      onauxclick={{this.toggleISO}}
+      onauxclick={{this.display.toggleISO}}
       ...attributes
     >
       {{#each @board as |row|}}
@@ -94,10 +91,10 @@ class Board extends Component {
             <button
               class={{if cell.alive "alive"}}
               onclick={{cell.toggle}}
-              aria-label="Cell for {{cell.label}}"
+              aria-label="Cell for {{cell.label}}" type="button"
             ></button>
           {{else}}
-            <button class={{if cell.alive "alive"}} disabled></button>
+            <button class={{if cell.alive "alive"}} disabled type="button"></button>
           {{/if}}
         {{/each}}
       {{/each}}

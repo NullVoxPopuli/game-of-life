@@ -2,7 +2,8 @@
   --size: 32px;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -33,7 +34,7 @@ footer {
   z-index: 10;
 }
 
-footer input[type='number'] {
+footer input[type="number"] {
   max-width: 50px;
 }
 
@@ -68,7 +69,6 @@ footer input[type='number'] {
   transform: translateX(-50%) translateY(-50%) rotateX(60deg) rotateY(0deg) rotateZ(-45deg) !important;
 }
 
-
 .board button {
   border: none;
   width: var(--size);
@@ -89,16 +89,15 @@ footer input[type='number'] {
 }
 
 .boards.show-lines .board button {
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   background: white;
 }
 .boards.show-lines .board button.alive {
   background: black;
 }
 .boards.show-lines .board button.alive {
-  border: 1px solid rgba(255,255,255,0.35);
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
-
 
 .showing-history.boards {
   display: flex;
@@ -113,23 +112,17 @@ footer input[type='number'] {
   filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15));
   left: calc(7rem * var(--index) - 30rem);
   transform:
-    /* centering offset */
-    translateY(-50%) translateX(calc(-50% + (2rem * var(--index))))
-    perspective(var(--perspective))
-    rotateY(calc(
-      70deg * (var(--index) / var(--count))
-    ))
-    ;
+    /* centering offset */ translateY(-50%)
+    translateX(calc(-50% + (2rem * var(--index)))) perspective(var(--perspective))
+    rotateY(calc(70deg * (var(--index) / var(--count))));
 }
 
 .showing-history .board:hover {
   opacity: 1;
   z-index: 20;
   transform:
-    /* centering offset */
-    translateY(-50%) translateX(calc(-50% + (2rem * var(--index))))
-    scale(1.2)
-  ;
+    /* centering offset */ translateY(-50%)
+    translateX(calc(-50% + (2rem * var(--index)))) scale(1.2);
 }
 
 .board button.alive {
@@ -137,27 +130,26 @@ footer input[type='number'] {
 }
 
 .board button.alive {
-  transform:translateZ(var(--d));
+  transform: translateZ(var(--d));
 }
 .board button.alive::before,
-.board button.alive::after{
-  content:"";
-  bottom:0;
-  left:0;
-  position:absolute;
-  background:inherit;
-  border:inherit;
+.board button.alive::after {
+  content: "";
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  background: inherit;
+  border: inherit;
 }
 .board button.alive::before {
-  width:var(--d);
-  top:0;
-  transform-origin:left;
-  transform:rotateY(90deg);
+  width: var(--d);
+  top: 0;
+  transform-origin: left;
+  transform: rotateY(90deg);
 }
 .board button.alive::after {
-  height:var(--d);
-  right:0;
-  transform-origin:bottom;
-  transform:rotateX(90deg);
+  height: var(--d);
+  right: 0;
+  transform-origin: bottom;
+  transform: rotateX(90deg);
 }
-

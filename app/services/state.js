@@ -8,10 +8,6 @@ export default class State extends Service {
   @tracked maxY = 5;
   @tracked maxX = 5;
   @tracked _board;
-  @tracked showHistory = false;
-  @tracked showLines = true;
-
-  toggleLines = () => (this.showLines = !this.showLines);
 
   history = new TrackedArray();
 
@@ -40,8 +36,6 @@ export default class State extends Service {
   passTime = () => {
     this.#snapshot();
   };
-
-  toggleHistory = () => (this.showHistory = !this.showHistory);
 
   createBoard = (x, y) => {
     this.maxX = x;

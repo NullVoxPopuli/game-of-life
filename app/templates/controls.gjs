@@ -5,6 +5,7 @@ import { on } from '@ember/modifier';
 
 export class Controls extends Component {
   @service state;
+  @service display;
 
   reset = () => this.state.reset();
 
@@ -52,9 +53,14 @@ export class Controls extends Component {
     this.frame = requestAnimationFrame(play)
   };
 
+  toggleIso = () => {
+    let last = [...document.querySelectorAll('.board')].reverse()?.[0];
+    last?.classList?.toggle?.('iso');
+  }
+
   <template>
     <div>
-      <button {{on "click" this.toggleAnimation}}>
+      <button type="button" {{on "click" this.toggleAnimation}}>
         {{#if this.isPlaying}}
           Stop
         {{else}}
@@ -69,27 +75,35 @@ export class Controls extends Component {
       />
       </label>
 
-      <button {{on "click" this.state.passTime}}>
+      <button type="button" {{on "click" this.state.passTime}}>
         Progress Time
       </button>
 
-      <button {{on "click" this.state.toggleHistory}}>
-        {{#if this.state.showHistory}}
+      <button type="button" {{on "click" this.display.toggleHistory}}>
+        {{#if this.display.showHistory}}
           Hide History
         {{else}}
           Show History
         {{/if}}
       </button>
 
-      <button {{on "click" this.state.toggleLines}}>
-        {{#if this.state.showLines}}
+      <button type="button" {{on "click" this.display.toggleLines}}>
+        {{#if this.display.showLines}}
           Hide Lines
         {{else}}
           Show Lines
         {{/if}}
       </button>
 
-    <button {{on 'click' this.reset}}>Reset</button>
+      <button type="button" {{on "click" this.toggleIso}}>
+        {{#if this.isIso}}
+          Flat
+        {{else}}
+          Iso
+        {{/if}}
+      </button>
+
+    <button type="button" {{on 'click' this.reset}}>Reset</button>
 
   </div>
   <form {{on 'submit' this.changeDimensions}}>
@@ -103,7 +117,7 @@ export class Controls extends Component {
       <input type="number" name="height" value={{this.state.maxY}} />
     </label>
 
-    <button>Update Dimensions</button>
+    <button type="submit">Update Dimensions</button>
   </form>
   </template>
 }

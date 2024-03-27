@@ -24,6 +24,7 @@ export default class extends Route {
       at: { x: 0, y: 16 },
     });
 
+    // "still-life"
     this.state.addShape({
       shape: [
         [1, 1],
@@ -32,6 +33,7 @@ export default class extends Route {
       at: { x: 16, y: 16 },
     });
 
+    // "glider"
     this.state.addShape({
       shape: [
         [0, 1, 0],
@@ -39,6 +41,16 @@ export default class extends Route {
         [1, 1, 1],
       ],
       at: { x: 8, y: 0 },
+    });
+
+    // Acorn
+    this.state.addShape({
+      shape: [
+        [0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0],
+        [1, 1, 0, 0, 1, 1, 1],
+      ],
+      at: { x: 7, y: 10 },
     });
   }
 }

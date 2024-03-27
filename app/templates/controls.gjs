@@ -29,6 +29,7 @@ export class Controls extends Component {
   get isPlaying() {
     return Boolean(this.frame);
   }
+
   toggleAnimation = () => {
     if (this.frame) {
       cancelAnimationFrame(this.frame);
@@ -39,6 +40,10 @@ export class Controls extends Component {
 
 
     const play = () => {
+      if (!this.state.hasAnyShape()) {
+        return this.toggleAnimation();
+      }
+
       if (this.state.isStable) {
         this.toggleAnimation();
       }

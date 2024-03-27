@@ -43,6 +43,7 @@ footer input[type="number"] {
 
 .boards {
   position: relative;
+  transform-style: preserve-3d;
 }
 
 .board {
@@ -90,11 +91,8 @@ footer input[type="number"] {
 }
 
 .board.historical {
-  opacity: 0.85;
-
-}
-.show-lines .board.historical {
-  opacity: 0.65;
+  /* can't set opacity, otherwise preserve-3d breaks */
+  /* opacity: 0.85; */
 }
 
 .boards.show-lines .board button {
@@ -108,6 +106,13 @@ footer input[type="number"] {
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
+.show-lines .board.historical button {
+  background: rgba(255,255,255,0.85);
+}
+.show-lines .board.historical button.alive {
+  background: rgba(0,0,0,0.85);
+}
+
 .showing-history.boards {
   display: flex;
   max-width: 100dvw;
@@ -119,7 +124,8 @@ footer input[type="number"] {
 }
 
 .showing-history .board {
-  filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15));
+  /* can't have filter, otherwise preserve-3d breaks */
+  /* filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15)); */
   left: calc(7rem * var(--index) - 30rem);
   transform:
     /* centering offset */ translateY(-50%)
@@ -148,18 +154,29 @@ footer input[type="number"] {
   bottom: 0;
   left: 0;
   position: absolute;
-  background: inherit;
   border: inherit;
 }
 .board button.alive::before {
   width: var(--d);
+  background: rgba(50,50,50,1);
   top: 0;
   transform-origin: left;
   transform: rotateY(90deg);
 }
 .board button.alive::after {
   height: var(--d);
+  background: rgba(30,30,30,1);
   right: 0;
   transform-origin: bottom;
   transform: rotateX(90deg);
+}
+
+.board.historical button.alive {
+  background: rgba(0,0,0,0.9);
+}
+.board.historical button.alive::after {
+  background: rgba(30,30,30,0.9);
+}
+.board.historical button.alive::before {
+  background: rgba(50,50,50,0.9);
 }

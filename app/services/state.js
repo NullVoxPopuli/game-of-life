@@ -15,6 +15,7 @@ export default class State extends Service {
   addShape = (...args) => this._board.addShape(...args);
   hasShape = (...args) => this._board.hasShape(...args);
   shapeAt = (...args) => this._board.shapeAt(...args);
+  hasAnyShape = () => this._board.hasAnyShape();
   asJSON = () => this._board.toJSON();
 
   get board() {
@@ -55,5 +56,11 @@ export default class State extends Service {
 
     // this is now "previous"
     this.history.push(current);
+
+    // Removes oldest snapshot (to keep memory under control)
+    // It's possible 20 is too small, these *are* just JSON objects
+    if (this.history.length > 20) {
+      this.history.unshift();
+    }
   };
 }

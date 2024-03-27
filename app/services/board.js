@@ -17,6 +17,29 @@ export class Board {
     }
   };
 
+  hasAnyShape = () => {
+    let result = false;
+
+    this.eachCell(({ cell }) => {
+      if (cell.alive) {
+        result = true;
+      }
+    });
+
+    return result;
+  };
+
+  eachCell = (callback) => {
+    for (let y = 0; y < this.state.length; y++) {
+      let row = this.state[y];
+      for (let x = 0; x < row.length; x++) {
+        let cell = row[x];
+
+        callback({ x, y, cell });
+      }
+    }
+  };
+
   hasShape = ({ shape, at }) => {
     for (let y = 0; y < shape.length; y++) {
       let row = shape[y];

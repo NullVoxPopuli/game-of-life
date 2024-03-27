@@ -4,6 +4,16 @@ import { service } from '@ember/service';
 export default class extends Route {
   @service state;
 
+  queryParams = {
+    delay: { refreshModel: false },
+    width: { refreshModel: false },
+    height: { refreshModel: false },
+    iso: { refreshModel: false },
+    hideLines: { refreshModel: false },
+    showHistory: { refreshModel: false },
+    seed: { refreshModel: false },
+  };
+
   beforeModel() {
     this.state.createBoard(20, 20);
 

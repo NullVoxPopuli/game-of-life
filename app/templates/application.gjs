@@ -44,7 +44,7 @@ class Display extends Component {
     return this.display.showHistory;
   }
   get showLines() {
-    return this.display.showLines;
+    return !this.display.hideLines;
   }
 
   <template>
@@ -62,7 +62,11 @@ class Display extends Component {
         {{/each}}
       {{/if}}
 
-      <Board @board={{this.state.board}} @index="var(--count)" />
+      <Board
+        @board={{this.state.board}}
+        @index="var(--count)"
+        class={{if this.display.iso "iso"}}
+      />
     </div>
   </template>
 }

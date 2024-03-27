@@ -18,13 +18,16 @@ export class Controls extends Component {
     let width = Number(data.width);
     let height = Number(data.height);
 
+    this.display.setWidth(width);
+    this.display.setHeight(height);
     this.state.createBoard(width, height);
   }
 
-  @tracked delay = 200;
-  updateDelay = (event) => this.delay = Number(event.target.value);
+  updateDelay = (event) => this.display.setDelay(Number(event.target.value));
 
   @tracked frame;
+  // timeout is used to artificially slow down
+  // the animation
   timeout;
   get isPlaying() {
     return Boolean(this.frame);
@@ -51,17 +54,12 @@ export class Controls extends Component {
       this.state.passTime();
       this.timeout = setTimeout(() => {
         this.frame = requestAnimationFrame(play);
-      }, this.delay);
+      }, this.display.delay);
     }
 
     this.state.history.length = 0;
     this.frame = requestAnimationFrame(play)
   };
-
-  toggleIso = () => {
-    let last = [...document.querySelectorAll('.board')].reverse()?.[0];
-    last?.classList?.toggle?.('iso');
-  }
 
   <template>
     <div>
@@ -75,7 +73,7 @@ export class Controls extends Component {
 
       <label>
         Delay
-      <input type="number" name="delay" value={{this.delay}}
+      <input type="number" name="delay" value={{this.display.delay}}
         {{on 'input' this.updateDelay}}
       />
       </label>
@@ -93,15 +91,15 @@ export class Controls extends Component {
       </button>
 
       <button type="button" {{on "click" this.display.toggleLines}}>
-        {{#if this.display.showLines}}
-          Hide Lines
-        {{else}}
+        {{#if this.display.hideLines}}
           Show Lines
+        {{else}}
+          Hide Lines
         {{/if}}
       </button>
 
-      <button type="button" {{on "click" this.toggleIso}}>
-        {{#if this.isIso}}
+      <button type="button" {{on "click" this.display.toggleIso}}>
+        {{#if this.display.iso}}
           Flat
         {{else}}
           Iso

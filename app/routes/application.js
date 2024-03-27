@@ -14,53 +14,57 @@ export default class extends Route {
     seed: { refreshModel: false },
   };
 
-  beforeModel() {
-    this.state.createBoard(20, 20);
+  beforeModel(transition) {
+    let { width, height, seed } = transition.to.queryParams || {};
 
-    this.state.addShape({
-      shape: [
-        [0, 1, 0],
-        [1, 1, 1],
-      ],
-      at: { x: 5, y: 5 },
-    });
+    this.state.createBoard(Number(width) || 20, Number(height) || 20);
 
-    this.state.addShape({
-      shape: [
-        [0, 1],
-        [1, 0],
-        [1, 0],
-      ],
-      at: { x: 0, y: 16 },
-    });
+    if (!seed) {
+      this.state.addShape({
+        shape: [
+          [0, 1, 0],
+          [1, 1, 1],
+        ],
+        at: { x: 5, y: 5 },
+      });
 
-    // "still-life"
-    this.state.addShape({
-      shape: [
-        [1, 1],
-        [1, 1],
-      ],
-      at: { x: 16, y: 16 },
-    });
+      this.state.addShape({
+        shape: [
+          [0, 1],
+          [1, 0],
+          [1, 0],
+        ],
+        at: { x: 0, y: 16 },
+      });
 
-    // "glider"
-    this.state.addShape({
-      shape: [
-        [0, 1, 0],
-        [0, 0, 1],
-        [1, 1, 1],
-      ],
-      at: { x: 8, y: 0 },
-    });
+      // "still-life"
+      this.state.addShape({
+        shape: [
+          [1, 1],
+          [1, 1],
+        ],
+        at: { x: 16, y: 16 },
+      });
 
-    // Acorn
-    this.state.addShape({
-      shape: [
-        [0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0],
-        [1, 1, 0, 0, 1, 1, 1],
-      ],
-      at: { x: 7, y: 10 },
-    });
+      // "glider"
+      this.state.addShape({
+        shape: [
+          [0, 1, 0],
+          [0, 0, 1],
+          [1, 1, 1],
+        ],
+        at: { x: 8, y: 0 },
+      });
+
+      // Acorn
+      this.state.addShape({
+        shape: [
+          [0, 1, 0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0, 0, 0],
+          [1, 1, 0, 0, 1, 1, 1],
+        ],
+        at: { x: 7, y: 10 },
+      });
+    }
   }
 }

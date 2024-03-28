@@ -1,11 +1,27 @@
 :root {
   --size: 32px;
+  --bg: #111;
+
+  --bgr: 0;
+  --bgg: 0;
+  --bgb: 0;
+
+  --fg: #fff;
+  --fgr: 255;
+  --fgg: 255;
+  --fgb: 255;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+a {
+  color: var(--fg);
 }
 
 body {
@@ -38,9 +54,6 @@ footer input[type="number"] {
   max-width: 50px;
 }
 
-.app-container {
-}
-
 .boards {
   position: relative;
   transform-style: preserve-3d;
@@ -55,7 +68,7 @@ footer input[type="number"] {
 
   transition: all 0.3s;
   z-index: 1;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--fgr), var(--fgg), var(--fgb), 0.15);
 
   /* makes animating easier */
   position: absolute;
@@ -64,119 +77,146 @@ footer input[type="number"] {
   /* we will need to maintain this offset */
   transform: translateX(-50%) translateY(-50%);
   transform-style: preserve-3d;
+
+  &.iso {
+    transform: translateX(-50%) translateY(-50%) rotateX(60deg) rotateY(0deg) rotateZ(-45deg) !important;
+  }
+
+  button {
+    border: none;
+    width: var(--size);
+    height: var(--size);
+    background: transparent;
+    transform-style: preserve-3d;
+    z-index: 0;
+
+    &:focus-visible {
+      outline-width: 3px;
+      outline-style: solid;
+      outline-color: color(from var(--fg) srgb 0.8 0 b / 1);
+      z-index: 1;
+      outline-offset: 2px;
+    }
+
+    &.alive {
+      background: color(from var(--fg) srgb r g b / 1);
+    }
+  }
 }
 
-.board.iso {
-  transform: translateX(-50%) translateY(-50%) rotateX(60deg) rotateY(0deg) rotateZ(-45deg) !important;
+.showing-history {
+  &.boards {
+    display: flex;
+    max-width: 100dvw;
+    padding-right: calc(9rem* var(--count));
+
+    --translateX: 25%;
+    --perspective: 1000px;
+    --rotationAmount: calc(20deg / var(--count));
+  }
+
+  .board {
+    /* transition: all 0.2s; */
+    transition: all 0.0s;
+    /* can't have filter, otherwise preserve-3d breaks */
+    /* filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15)); */
+    left: calc(7rem * var(--index) - 30rem);
+    transform:
+      /* centering offset */ translateY(-50%)
+      translateX(calc(-50% + (2rem * var(--index)))) perspective(var(--perspective))
+      rotateY(calc(40deg * (var(--index) / var(--count))));
+
+    &:hover {
+      /* opacity: 1; */
+      z-index: 20;
+      transform:
+        /* centering offset */ translateY(-50%)
+        translateX(calc(-50% + (2rem * var(--index)))) scale(1.2);
+    }
+
+    &.historical {
+      transition: all 0.3s;
+    }
+  }
 }
 
+.boards {
+  &.show-lines {
+    .board {
+      button {
+        border: 1px solid color(from var(--fg) srgb r g b / 0.15);
+        background: var(--bg);
 
-.board button {
-  border: none;
-  width: var(--size);
-  height: var(--size);
-  background: transparent;
-  transform-style: preserve-3d;
-}
+        &.alive {
+          background: rgb(var(--fgr), var(--fgg), var(--fgb));
+          border: 1px solid color(from var(--fg) srgb r g b / 0.35);
+        }
+      }
 
-.board button.alive {
-  background: black;
-}
+      &.historical {
+        button {
+          background: color(from var(--bg) srgb r g b / 0.85);
 
-.showing-history .board {
-  transition: none 0.0s;
-}
-.showing-history .board.historical {
-  transition: all 0.3s;
-}
-
-.board.historical {
-  /* can't set opacity, otherwise preserve-3d breaks */
-  /* opacity: 0.85; */
-}
-
-.boards.show-lines .board button {
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  background: white;
-}
-.boards.show-lines .board button.alive {
-  background: black;
-}
-.boards.show-lines .board button.alive {
-  border: 1px solid rgba(255, 255, 255, 0.35);
+          &.alive {
+            background: color(from var(--fg) srgb r g b / 0.85);
+          }
+        }
+      }
+    }
+  }
 }
 
-.show-lines .board.historical button {
-  background: rgba(255,255,255,0.85);
-}
-.show-lines .board.historical button.alive {
-  background: rgba(0,0,0,0.85);
+.board {
+  button {
+    &.alive {
+      --d: 1.5rem;
+      transform: translateZ(var(--d));
+
+      &::before,
+      &::after {
+        content: "";
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        border: inherit;
+      }
+
+      &::before {
+        width: var(--d);
+        background: color(from var(--fg) srgb 0.9 0.8 0.8);
+        /* background: rgba(50,50,50,1); */
+        top: 0;
+        transform-origin: left;
+        transform: rotateY(90deg);
+      }
+
+      &::after {
+        height: var(--d);
+        background: color(from var(--fg) srgb 0.7 0.7 0.9);
+        /* background: rgba(30,30,30,1); */
+        right: 0;
+        transform-origin: bottom;
+        transform: rotateX(90deg);
+      }
+    }
+  }
+
+  &.historical {
+    button {
+      background: color(from var(--bg) srgb r g b / 0.9);
+    }
+
+    button.alive {
+      background: color(from var(--fg) srgb r g b / 0.9);
+      /* background: rgba(0,0,0,0.9); */
+
+      &::after {
+        background: color(from var(--fg) srgb 0.7 0.7 0.9);
+      }
+      &::before {
+        background: color(from var(--fg) srgb 0.9 0.8 0.8);
+      }
+    }
+  }
 }
 
-.showing-history.boards {
-  display: flex;
-  max-width: 100dvw;
-  padding-right: calc(9rem* var(--count));
-
-  --translateX: 25%;
-  --perspective: 1000px;
-  --rotationAmount: calc(20deg / var(--count));
-}
-
-.showing-history .board {
-  /* can't have filter, otherwise preserve-3d breaks */
-  /* filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15)); */
-  left: calc(7rem * var(--index) - 30rem);
-  transform:
-    /* centering offset */ translateY(-50%)
-    translateX(calc(-50% + (2rem * var(--index)))) perspective(var(--perspective))
-    rotateY(calc(40deg * (var(--index) / var(--count))));
-}
-
-.showing-history .board:hover {
-  opacity: 1;
-  z-index: 20;
-  transform:
-    /* centering offset */ translateY(-50%)
-    translateX(calc(-50% + (2rem * var(--index)))) scale(1.2);
-}
-
-.board button.alive {
-  --d: 1.5rem;
-}
-
-.board button.alive {
-  transform: translateZ(var(--d));
-}
-.board button.alive::before,
-.board button.alive::after {
-  content: "";
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  border: inherit;
-}
-.board button.alive::before {
-  width: var(--d);
-  background: rgba(50,50,50,1);
-  top: 0;
-  transform-origin: left;
-  transform: rotateY(90deg);
-}
-.board button.alive::after {
-  height: var(--d);
-  background: rgba(30,30,30,1);
-  right: 0;
-  transform-origin: bottom;
-  transform: rotateX(90deg);
-}
-
-.board.historical button.alive {
-  background: rgba(0,0,0,0.9);
-}
-.board.historical button.alive::after {
-  background: rgba(30,30,30,0.9);
-}
-.board.historical button.alive::before {
-  background: rgba(50,50,50,0.9);
-}

@@ -19,6 +19,10 @@ export default class extends Route {
 
     this.state.createBoard(Number(width) || 20, Number(height) || 20);
 
+    if (seed) {
+      return this.state.restoreSeed(seed);
+    }
+
     if (!seed) {
       this.state.addShape({
         shape: [

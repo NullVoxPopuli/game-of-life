@@ -52,4 +52,10 @@ export default class Display extends Service {
       showHistory: this.showHistory ? '0' : '1',
       iso: this.showHistory ? this.iso : '0',
     });
+
+  updateSeed = (board) => {
+    this.#setQP({
+      seed: board.getSeed(),
+    });
+  };
 }

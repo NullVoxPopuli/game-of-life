@@ -29,6 +29,43 @@ export class Board {
     return result;
   };
 
+  getSeed = () => {
+    let result = { x: [], y: [] };
+
+    this.eachCell(({ x, y, cell }) => {
+      if (cell.alive) {
+        result.x.push(x);
+        result.y.push(y);
+      }
+    });
+
+    return JSON.stringify(result);
+  };
+
+  restoreSeed = (seed) => {
+    let coords = { x: [], y: [] };
+
+    try {
+      coords = JSON.parse(seed);
+    } catch (e) {
+      // TODO: toast messages
+      console.error(e);
+      return;
+    }
+
+    if (coords.x.length !== coords.y.length) {
+      console.error(`X's and Y's are of different length`);
+      return;
+    }
+
+    for (let i = 0; i < coords.x.length; i++) {
+      let x = coords.x[i];
+      let y = coords.y[i];
+
+      this.state[y][x].alive = true;
+    }
+  };
+
   eachCell = (callback) => {
     for (let y = 0; y < this.state.length; y++) {
       let row = this.state[y];

@@ -1,10 +1,13 @@
-import Service from '@ember/service';
+import Service, { service } from '@ember/service';
+import { registerDestructor } from '@ember/destroyable';
 import { TrackedArray } from 'tracked-built-ins';
 import { tracked } from '@glimmer/tracking';
 import { Board } from './board';
 
 // Yes, state can be this easy!
 export default class State extends Service {
+  @service display;
+
   @tracked maxY = 5;
   @tracked maxX = 5;
   @tracked _board;
@@ -15,8 +18,23 @@ export default class State extends Service {
   addShape = (...args) => this._board.addShape(...args);
   hasShape = (...args) => this._board.hasShape(...args);
   shapeAt = (...args) => this._board.shapeAt(...args);
+  restoreSeed = (...args) => this._board.restoreSeed(...args);
   hasAnyShape = () => this._board.hasAnyShape();
   asJSON = () => this._board.toJSON();
+
+  constructor(owner) {
+    super(owner);
+
+    const handleClick = (event) => {
+      if (event.target.parentElement?.classList.contains('board')) {
+        this.display.updateSeed(this._board);
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    registerDestructor(this, () => document.removeEventListener('click', handleClick));
+  }
 
   get board() {
     return this._board.state;

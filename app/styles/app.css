@@ -86,6 +86,7 @@ footer input[type="number"] {
     border: none;
     width: var(--size);
     height: var(--size);
+    transition: all 0.1s;
     background: transparent;
     transform-style: preserve-3d;
     z-index: 0;
@@ -168,6 +169,7 @@ footer input[type="number"] {
 
 .board {
   button {
+
     &.alive {
       --d: 1.5rem;
       transform: translateZ(var(--d));

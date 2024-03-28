@@ -1,4 +1,5 @@
 :root {
+  --iteration-delay: 0.150s;
   --size: 32px;
   --bg: #111;
 
@@ -12,12 +13,17 @@
   --fgb: 255;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   background: var(--bg);
   color: var(--fg);
+  font-family: system-ui, sans-serif;
 }
 
 a {
@@ -39,15 +45,33 @@ header {
   right: 1rem;
 }
 
-footer {
+footer.timeline {
   position: fixed;
   transform: translateX(-50%);
   left: 50%;
   bottom: 1rem;
   display: flex;
   gap: 0.5rem;
+  flex-direction: row;
+  z-index: 10;
+}
+
+footer.config {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
   flex-direction: column;
   z-index: 10;
+
+  form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
 }
 
 footer input[type="number"] {
@@ -80,13 +104,24 @@ footer input[type="number"] {
 
   &.iso {
     transform: translateX(-50%) translateY(-50%) rotateX(60deg) rotateY(0deg) rotateZ(-45deg) !important;
+
+    button.alive {
+      border: none !important;
+
+      &::before {
+        border: 1px solid color(from var(--fg) srgb r g b / 0.65);
+      }
+      &::after {
+        border: 1px solid color(from var(--fg) srgb r g b / 0.65);
+      }
+    }
   }
 
   button {
     border: none;
     width: var(--size);
     height: var(--size);
-    transition: all 0.1s;
+    transition: all calc(var(--iteration-delay) * 0.6);
     background: transparent;
     transform-style: preserve-3d;
     z-index: 0;
@@ -150,7 +185,7 @@ footer input[type="number"] {
 
         &.alive {
           background: rgb(var(--fgr), var(--fgg), var(--fgb));
-          border: 1px solid color(from var(--fg) srgb r g b / 0.35);
+          border: 1px solid color(from var(--bg) srgb r g b / 0.2);
         }
       }
 

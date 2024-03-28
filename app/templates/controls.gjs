@@ -23,7 +23,10 @@ export class Controls extends Component {
     this.state.createBoard(width, height);
   }
 
-  updateDelay = (event) => this.display.setDelay(Number(event.target.value));
+  updateDelay = (event) => {
+    let ms = Number(event.target.value);
+    this.display.setDelay(ms);
+  }
 
   @tracked frame;
   // timeout is used to artificially slow down
@@ -62,65 +65,69 @@ export class Controls extends Component {
   };
 
   <template>
-    <div>
-      <button type="button" {{on "click" this.toggleAnimation}}>
-        {{#if this.isPlaying}}
-          Stop
-        {{else}}
-          Play
-        {{/if}}
-      </button>
+      <footer class="timeline">
+        <button type="button" {{on "click" this.toggleAnimation}}>
+          {{#if this.isPlaying}}
+            Stop
+          {{else}}
+            Play
+          {{/if}}
+        </button>
 
-      <label>
-        Delay
-      <input type="number" name="delay" value={{this.display.delay}}
-        {{on 'input' this.updateDelay}}
-      />
-      </label>
+        <label>
+          Delay
+        <input type="number" name="delay" value={{this.display.delay}}
+          {{on 'input' this.updateDelay}}
+        />
+        </label>
 
-      <button type="button" {{on "click" this.state.passTime}}>
-        Progress Time
-      </button>
+        <button type="button" {{on "click" this.state.passTime}}>
+          Progress Time
+        </button>
 
-      <button type="button" {{on "click" this.display.toggleHistory}}>
-        {{#if this.display.showHistory}}
-          Hide History
-        {{else}}
-          Show History
-        {{/if}}
-      </button>
+        <button type="button" {{on "click" this.display.toggleHistory}}>
+          {{#if this.display.showHistory}}
+            Hide History
+          {{else}}
+            Show History
+          {{/if}}
+        </button>
+      </footer>
 
-      <button type="button" {{on "click" this.display.toggleLines}}>
-        {{#if this.display.hideLines}}
-          Show Lines
-        {{else}}
-          Hide Lines
-        {{/if}}
-      </button>
+      <footer class="config">
+        <button type="button" {{on "click" this.display.toggleLines}}>
+          {{#if this.display.hideLines}}
+            Show Lines
+          {{else}}
+            Hide Lines
+          {{/if}}
+        </button>
 
-      <button type="button" {{on "click" this.display.toggleIso}}>
-        {{#if this.display.iso}}
-          Flat
-        {{else}}
-          Iso
-        {{/if}}
-      </button>
+        <button type="button" {{on "click" this.display.toggleIso}}>
+          {{#if this.display.iso}}
+            Flat
+          {{else}}
+            Iso
+          {{/if}}
+        </button>
 
-    <button type="button" {{on 'click' this.reset}}>Reset</button>
+        <form {{on 'submit' this.changeDimensions}}>
+          <label>
+            Width:
+            <input type="number" name="width" value={{this.state.maxX}} />
+          </label>
 
-  </div>
-  <form {{on 'submit' this.changeDimensions}}>
-    <label>
-      Width:
-      <input type="number" name="width" value={{this.state.maxX}} />
-    </label>
+          <label>
+            Height:
+            <input type="number" name="height" value={{this.state.maxY}} />
+          </label>
 
-    <label>
-      Height:
-      <input type="number" name="height" value={{this.state.maxY}} />
-    </label>
+          <button type="submit">Update Dimensions</button>
+        </form>
 
-    <button type="submit">Update Dimensions</button>
-  </form>
+        <hr>
+
+        <button type="button" {{on 'click' this.reset}}>Reset</button>
+      </footer>
   </template>
 }

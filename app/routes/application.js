@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 
 export default class extends Route {
   @service state;
+  @service display;
 
   queryParams = {
     delay: { refreshModel: false },
@@ -15,9 +16,11 @@ export default class extends Route {
   };
 
   beforeModel(transition) {
-    let { width, height, seed } = transition.to.queryParams || {};
+    let { width, height, seed, delay } = transition.to.queryParams || {};
 
     this.state.createBoard(Number(width) || 20, Number(height) || 20);
+
+    this.display.setDelay(Number(delay));
 
     if (seed) {
       return this.state.restoreSeed(seed);

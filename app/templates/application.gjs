@@ -15,9 +15,7 @@ export default Route(
     <div class="app-container">
       <Display />
       <br />
-      <footer>
-        <Controls />
-      </footer>
+      <Controls />
     </div>
   </template>
 );

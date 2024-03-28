@@ -40,7 +40,6 @@ export default class Display extends Service {
       },
     });
 
-  setDelay = (num) => this.#setQP({ delay: num });
   setWidth = (num) => this.#setQP({ width: num });
   setHeight = (num) => this.#setQP({ height: num });
 
@@ -57,5 +56,13 @@ export default class Display extends Service {
     this.#setQP({
       seed: board.getSeed(),
     });
+  };
+
+  setDelay = (ms) => {
+    this.#setQP({ delay: ms });
+
+    let s = ms / 1000;
+
+    document.querySelector(':root').style.setProperty('--iteration-delay', `${s}s`);
   };
 }

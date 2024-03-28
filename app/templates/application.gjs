@@ -1,3 +1,5 @@
+import './app.css';
+
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { pageTitle } from 'ember-page-title';

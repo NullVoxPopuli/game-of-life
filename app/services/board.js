@@ -1,5 +1,7 @@
 import { createBoard } from './helpers';
 
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
+
 export class Board {
   constructor(width, height, state) {
     this.state = createBoard({ width, height, state });
@@ -39,14 +41,16 @@ export class Board {
       }
     });
 
-    return JSON.stringify(result);
+    let json = JSON.stringify(result);
+    return compressToEncodedURIComponent(json);
   };
 
   restoreSeed = (seed) => {
     let coords = { x: [], y: [] };
 
     try {
-      coords = JSON.parse(seed);
+      let json = decompressFromEncodedURIComponent(seed);
+      coords = JSON.parse(json);
     } catch (e) {
       // TODO: toast messages
       console.error(e);

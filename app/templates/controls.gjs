@@ -20,7 +20,10 @@ export class Controls extends Component {
 
     this.display.setWidth(width);
     this.display.setHeight(height);
+
+    let seed = this.state.getSeed();
     this.state.createBoard(width, height);
+    this.state.restoreSeed(seed);
   }
 
   updateDelay = (event) => {

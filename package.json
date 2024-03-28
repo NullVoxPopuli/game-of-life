@@ -130,6 +130,7 @@
     "ember-primitives": "^0.14.0",
     "ember-resources": "^7.0.0",
     "ember-route-template": "^1.0.3",
+    "lz-string": "^1.5.0",
     "tracked-built-ins": "^3.3.0",
     "tracked-toolbox": "^2.0.0",
     "webpack": "^5.91.0"

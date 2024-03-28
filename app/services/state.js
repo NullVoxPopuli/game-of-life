@@ -19,6 +19,7 @@ export default class State extends Service {
   hasShape = (...args) => this._board.hasShape(...args);
   shapeAt = (...args) => this._board.shapeAt(...args);
   restoreSeed = (...args) => this._board.restoreSeed(...args);
+  getSeed = (...args) => this._board.getSeed(...args);
   hasAnyShape = () => this._board.hasAnyShape();
   asJSON = () => this._board.toJSON();
 

@@ -41,7 +41,7 @@ export class Board {
     this.updateCoordinates();
   };
 
-  groupUp = () => {
+  growUp = () => {
     this.state.unshift(createRow({ width: this.width, state: this.#stateService }));
     this.updateCoordinates();
   };

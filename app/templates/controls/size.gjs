@@ -14,23 +14,6 @@ export class Size extends Component {
     return this.display.width;
   }
 
-  changeDimensions = (event) => {
-    event.preventDefault();
-
-    let formData = new FormData(event.currentTarget);
-    let data = Object.fromEntries(formData.entries());
-
-    let width = Number(data.width);
-    let height = Number(data.height);
-
-    this.display.setWidth(width);
-    this.display.setHeight(height);
-
-    let seed = this.state.getSeed();
-    this.state.createBoard(width, height);
-    this.state.restoreSeed(seed);
-  };
-
   handleTop = (diff) => {
     this.state.deleteHistory();
 

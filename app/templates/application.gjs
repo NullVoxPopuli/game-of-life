@@ -92,12 +92,7 @@ class Board extends Component {
       {{#each @board as |row|}}
         {{#each row as |cell|}}
           {{#if cell.toggle}}
-            <button
-              class={{if cell.alive "alive"}}
-              onclick={{cell.toggle}}
-              aria-label="Cell for {{cell.label}}"
-              type="button"
-            ></button>
+            <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
           {{else}}
             <button class={{if cell.alive "alive"}} disabled type="button"></button>
           {{/if}}

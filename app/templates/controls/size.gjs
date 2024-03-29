@@ -55,11 +55,29 @@ export class Size extends Component {
     this.display.setHeight(this.state._board.height);
     this.display.updateSeed(this.state._board);
   };
-  handleLeft = () => {
+  handleLeft = (diff) => {
     this.state.deleteHistory();
+
+    if (diff < 0) {
+      this.state._board.shrinkLeft();
+    } else {
+      this.state._board.growLeft();
+    }
+
+    this.display.setWidth(this.state._board.width);
+    this.display.updateSeed(this.state._board);
   };
-  handleRight = () => {
+  handleRight = (diff) => {
     this.state.deleteHistory();
+
+    if (diff < 0) {
+      this.state._board.shrinkRight();
+    } else {
+      this.state._board.growRight();
+    }
+
+    this.display.setWidth(this.state._board.width);
+    this.display.updateSeed(this.state._board);
   };
 
   <template>

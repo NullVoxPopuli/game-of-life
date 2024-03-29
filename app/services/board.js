@@ -1,4 +1,5 @@
 import { createBoard, createRow, setCoordinates } from './helpers';
+import { Cell } from './cell';
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 
@@ -20,7 +21,25 @@ export class Board {
 
   at = (x, y) => this.state[y][x];
 
-  growLeft = () => {};
+  growLeft = () => {
+    for (let y = 0; y < this.state.length; y++) {
+      let row = this.state[y];
+
+      let cell = new Cell(NaN, y, this.#stateService);
+      row.unshift(cell);
+    }
+    this.updateCoordinates();
+  };
+
+  growRight = () => {
+    for (let y = 0; y < this.state.length; y++) {
+      let row = this.state[y];
+
+      let cell = new Cell(NaN, y, this.#stateService);
+      row.push(cell);
+    }
+    this.updateCoordinates();
+  };
 
   groupUp = () => {
     this.state.unshift(createRow({ width: this.width, state: this.#stateService }));
@@ -30,6 +49,16 @@ export class Board {
   growDown = () => {
     this.state.push(createRow({ width: this.width, state: this.#stateService }));
     this.updateCoordinates();
+  };
+  shrinkLeft = () => {
+    for (let y = 0; y < this.state.length; y++) {
+      this.state[y].shift();
+    }
+  };
+  shrinkRight = () => {
+    for (let y = 0; y < this.state.length; y++) {
+      this.state[y].pop();
+    }
   };
   shrinkDown = () => {
     this.state.pop();

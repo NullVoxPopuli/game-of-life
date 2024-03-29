@@ -20,12 +20,11 @@ export class Cell {
   toJSON() {
     return {
       alive: this.alive,
-      label: this.label,
       // This state probably isn't needed,
       // as it's encoded via containing array index.
       // It may be useful for debugging if things get out of order.
-      x: this.#x,
-      y: this.#y,
+      // x: this.#x,
+      // y: this.#y,
     };
   }
 

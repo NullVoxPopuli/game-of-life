@@ -36,13 +36,26 @@ export default class Display extends Service {
     return Number(this.queryParams['height']) || 20;
   }
 
-  #setQP = (qps) =>
-    this.router.transitionTo({
-      queryParams: {
-        ...this.queryParams,
-        ...qps,
-      },
+  /**
+  * Allows batching QP updates
+  */
+  #frame;
+  #qps;
+  #setQP = (qps) => {
+    if (this.#frame) cancelAnimationFrame(this.#frame);
+
+    this.#qps = {
+      ...this.queryParams,
+      ...this.#qps,
+      ...qps,
+    };
+
+    this.#frame = requestAnimationFrame(() => {
+      this.router.transitionTo({
+        queryParams: this.#qps,
+      });
     });
+  }
 
   setWidth = (num) => this.#setQP({ width: num });
   setHeight = (num) => this.#setQP({ height: num });

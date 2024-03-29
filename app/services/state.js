@@ -20,6 +20,7 @@ export default class State extends Service {
   shapeAt = (...args) => this._board.shapeAt(...args);
   restoreSeed = (...args) => this._board.restoreSeed(...args);
   getSeed = (...args) => this._board.getSeed(...args);
+  clear = (...args) => this._board.clear(...args);
   hasAnyShape = () => this._board.hasAnyShape();
   asJSON = () => this._board.toJSON();
 
@@ -63,8 +64,10 @@ export default class State extends Service {
     this._board = new Board(x, y, this);
   };
 
+  deleteHistory = () => void (this.history.length = 0);
+
   reset = () => {
-    this.history.length = 0;
+    this.deleteHistory();
     this.createBoard(this.maxX, this.maxY);
   };
 

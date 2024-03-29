@@ -1,13 +1,46 @@
-import { createBoard } from './helpers';
+import { createBoard, createRow, setCoordinates } from './helpers';
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 
 export class Board {
-  constructor(width, height, state) {
-    this.state = createBoard({ width, height, state });
+  #stateService;
+
+  constructor(width, height, stateService) {
+    this.#stateService = stateService;
+    this.state = createBoard({ width, height, state: stateService });
+  }
+
+  get width() {
+    return this.state[0].length;
+  }
+
+  get height() {
+    return this.state.length;
   }
 
   at = (x, y) => this.state[y][x];
+
+  growLeft = () => {};
+
+  groupUp = () => {
+    this.state.unshift(createRow({ width: this.width, state: this.#stateService }));
+    this.updateCoordinates();
+  };
+
+  growDown = () => {
+    this.state.push(createRow({ width: this.width, state: this.#stateService }));
+    this.updateCoordinates();
+  };
+  shrinkDown = () => {
+    this.state.pop();
+    this.updateCoordinates();
+  };
+  shrinkUp = () => {
+    this.state.shift();
+    this.updateCoordinates();
+  };
+
+  updateCoordinates = () => setCoordinates(this.state);
 
   addShape = ({ shape, at }) => {
     for (let y = 0; y < shape.length; y++) {
@@ -139,6 +172,10 @@ export class Board {
     }
 
     return true;
+  };
+
+  clear = () => {
+    this.eachCell(({ cell }) => (cell.alive = false));
   };
 
   clearManuallySet = () => {

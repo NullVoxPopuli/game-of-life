@@ -12,6 +12,10 @@ export default class Display extends Service {
     return this.queryParams['showHistory'] === '1';
   }
 
+  get seed() {
+    return this.queryParams['seed'];
+  }
+
   get hideLines() {
     return this.queryParams['hideLines'] === '1';
   }

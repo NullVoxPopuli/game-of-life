@@ -1,16 +1,39 @@
 import { TrackedArray } from 'tracked-built-ins';
 import { Cell } from './cell';
 
+/**
+ * For performance, when we are running the game,
+ * we don't want to be re-calculating x/y.
+ * While the game is running, we cannot change the dimensions.
+ */
+export function setCoordinates(boardState) {
+  for (let y = 0; y < boardState.length; y++) {
+    let row = boardState[y];
+    for (let x = 0; x < row.length; x++) {
+      let cell = row[x];
+      cell.setCoordinates(x, y);
+    }
+  }
+}
+
+export function createRow({ width, state }) {
+  let row = new TrackedArray();
+
+  for (let x = 0; x < width; x++) {
+    row.push(new Cell(x, NaN, state));
+  }
+
+  return row;
+}
+
 export function createBoard({ width, height, state }) {
   let board = new TrackedArray();
   for (let y = 0; y < height; y++) {
-    let row = new TrackedArray();
-
-    for (let x = 0; x < width; x++) {
-      row.push(new Cell(x, y, state));
-    }
+    let row = createRow({ width, state });
     board.push(row);
   }
+
+  setCoordinates(board);
 
   return board;
 }

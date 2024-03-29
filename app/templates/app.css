@@ -82,14 +82,6 @@ footer.config {
   gap: 0.5rem;
   flex-direction: column;
   z-index: 10;
-
-  form {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
 }
 
 footer input[type="number"] {

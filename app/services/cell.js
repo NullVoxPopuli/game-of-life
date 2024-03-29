@@ -12,6 +12,11 @@ export class Cell {
     this.#parentState = state;
   }
 
+  setCoordinates(x, y) {
+    this.#x = x;
+    this.#y = y;
+  }
+
   toJSON() {
     return {
       alive: this.alive,

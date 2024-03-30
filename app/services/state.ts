@@ -44,6 +44,8 @@ export class StateService extends Service {
 
   get isStable() {
     assert('Cannot access _board before it is created', this._board);
+    if (!this.previous) return false;
+
     return this._board.equals(this.previous);
   }
 

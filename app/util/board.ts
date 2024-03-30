@@ -1,7 +1,7 @@
 import { createBoard, createRow, setCoordinates } from './helpers';
 import { assert } from '@ember/debug';
 import { Cell } from './cell';
-import type { CellUtil, Shape, At } from './types';
+import type { CellUtil, Shape, At, State } from './types';
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 
@@ -154,17 +154,17 @@ export class Board {
       const row = this.state[y];
       assert(`Cannot add shape without a row`, row);
       for (let x = 0; x < row.length; x++) {
-        const cell = row[x];
-
-        assert(`Cannot add shape without a cell`, cell);
+        const cell = row[x] as Cell;
+        assert(`Cannot iterate without a cell`, cell);
         callback({ x, y, cell });
       }
     }
   };
 
-  hasShape = ({ shape, at }) => {
+  hasShape = ({ shape, at }: {  shape: Shape; at: At}) => {
     for (let y = 0; y < shape.length; y++) {
       const row = shape[y];
+      assert(`Cannot add shape without a row`, row);
       for (let x = 0; x < row.length; x++) {
         const value = row[x];
         const alive = Boolean(value);
@@ -179,7 +179,7 @@ export class Board {
     return true;
   };
 
-  shapeAt = ({ at, width, height }) => {
+  shapeAt = ({ at, width, height }: { at: At, width: number, height: number}) => {
     const result = [];
 
     for (let y = 0; y < height; y++) {
@@ -201,7 +201,7 @@ export class Board {
   /**
    * @param {Cell[][]} anotherBoard
    */
-  equals = (anotherBoard) => {
+  equals = (anotherBoard: State.Board) => {
     if (!anotherBoard) return false;
 
     if (anotherBoard.length !== this.state.length) return false;
@@ -210,6 +210,9 @@ export class Board {
       const row = anotherBoard[y];
       const ourRow = this.state[y];
 
+      if (!row) return false;
+      if (!ourRow) return false;
+
       if (ourRow.length !== row.length) return false;
 
       for (let x = 0; x < row.length; x++) {
@@ -217,6 +220,7 @@ export class Board {
         const ourCell = ourRow[x];
 
         if (!ourCell) return false;
+        if (!anotherCell) return false;
         if (anotherCell.alive !== ourCell.alive) return false;
       }
     }

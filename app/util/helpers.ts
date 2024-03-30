@@ -13,7 +13,7 @@ export function setCoordinates(boardState: ActiveBoardState) {
     const row = boardState[y];
     assert('[BUG]: cannot set coordinates without row', row);
     for (let x = 0; x < row.length; x++) {
-      const cell = row[x];
+      const cell = row[x] as Cell;
       assert('[BUG]: cannot set coordinates without cell', cell);
       cell.setCoordinates(x, y);
     }
@@ -141,5 +141,5 @@ export function findNeighbors({ x, y, board }: { x: number, y: number, board: St
     }
   }
 
-  return result;
+  return result as State.Cell[];
 }

@@ -35,7 +35,7 @@ export class Cell {
 
   toggle = () => (this.alive = !this.alive);
 
-  get previous(): State.Cell {
+  get previous(): State.Cell | undefined  {
     assert('[BUG]: missing x', this.#x);
     assert('[BUG]: missing y', this.#y);
     return this.#util.previousCell(this.#x, this.#y);
@@ -63,8 +63,12 @@ export class Cell {
     return ai(previous.alive, liveNeighbors);
   }
 
-  get neighbors() {
+  get neighbors(): State.Cell[] {
     const { previous: board } = this.#util;
+
+    // Can't do any calculations without the
+    // previous board
+    if (!board) return [];
 
     assert('[BUG]: missing x', this.#x);
     assert('[BUG]: missing y', this.#y);

@@ -4,6 +4,7 @@
     "environment": ["ember-loose", "ember-template-imports"]
   },
   "compilerOptions": {
+    "lib": ["esnext", "dom"],
     // The combination of `baseUrl` with `paths` allows Ember's classic package
     // layout, which is not resolveable with the Node resolution algorithm, to
     // work with TypeScript.
@@ -12,8 +13,8 @@
     // Apps don't need to publish declarations
     "declaration": false,
     "paths": {
-      "polaris-starter/tests/*": ["tests/*"],
-      "polaris-starter/*": ["app/*"],
+      "life/tests/*": ["tests/*"],
+      "life/*": ["app/*"],
       "*": ["types/*"]
     }
   },

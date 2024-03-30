@@ -1,35 +1,42 @@
+import { assert } from '@ember/debug';
 import { TrackedArray } from 'tracked-built-ins';
 import { Cell } from './cell';
+import type { State, ActiveBoardState, CellUtil } from 'life/util/types';
 
 /**
  * For performance, when we are running the game,
  * we don't want to be re-calculating x/y.
  * While the game is running, we cannot change the dimensions.
  */
-export function setCoordinates(boardState) {
+export function setCoordinates(boardState: ActiveBoardState) {
   for (let y = 0; y < boardState.length; y++) {
-    let row = boardState[y];
+    const row = boardState[y];
+    assert('[BUG]: cannot set coordinates without row', row);
     for (let x = 0; x < row.length; x++) {
-      let cell = row[x];
+      const cell = row[x];
+      assert('[BUG]: cannot set coordinates without cell', cell);
       cell.setCoordinates(x, y);
     }
   }
 }
 
-export function createRow({ width, state }) {
-  let row = new TrackedArray();
+export function createRow({ width, util }: { width: number, util: CellUtil }): Cell[] {
+  const row = new TrackedArray();
 
   for (let x = 0; x < width; x++) {
-    row.push(new Cell(x, NaN, state));
+    row.push(new Cell(util));
   }
 
-  return row;
+  // We don't actually care that this is tracked.
+  // it *is* important, but the whole point of TrackedArray
+  // at runtime is to behave like regular Arrays.
+  return row as Cell[];
 }
 
-export function createBoard({ width, height, state }) {
-  let board = new TrackedArray();
+export function createBoard({ width, height, util }: { width: number, height: number, util: CellUtil}): ActiveBoardState {
+  const board = new TrackedArray<Cell[]>();
   for (let y = 0; y < height; y++) {
-    let row = createRow({ width, state });
+    const row = createRow({ width, util });
     board.push(row);
   }
 
@@ -62,7 +69,7 @@ export function createBoard({ width, height, state }) {
  * ---
  * Extracted functions can easily be unit tested in isolation
  */
-export function ai(alive, liveNeighbors) {
+export function ai(alive: boolean, liveNeighbors: number) {
   if (!alive) {
     return liveNeighbors === 3;
   }
@@ -85,44 +92,52 @@ export function ai(alive, liveNeighbors) {
  * ---
  * Extracted functions can easily be unit tested in isolation
  */
-export function findNeighbors({ x, y, maxX, maxY, board }) {
-  let result = [];
+export function findNeighbors({ x, y, board }: { x: number, y: number, board: State.Board}) {
+  const result = [];
 
-  let prevX = x - 1;
-  let prevY = y - 1;
-  let nextX = x + 1;
-  let nextY = y + 1;
+  assert('[BUG]: should not call findNeighbors with no rows', board[0]);
 
+  const maxX = board[0].length;
+  const maxY = board.length;
+
+  const prevX = x - 1;
+  const prevY = y - 1;
+  const nextX = x + 1;
+  const nextY = y + 1;
+
+  // Lots of ! here.
+  // TS doesn't have a way to, in the type system,
+  // describe the size of an array, afaik
   if (prevY >= 0) {
-    result.push(board[prevY][x]);
+    result.push(board[prevY]![x]);
   }
   if (nextY < maxY) {
-    result.push(board[nextY][x]);
+    result.push(board[nextY]![x]);
   }
   if (prevX >= 0) {
-    result.push(board[y][prevX]);
+    result.push(board[y]![prevX]);
   }
   if (nextX < maxX) {
-    result.push(board[y][nextX]);
+    result.push(board[y]![nextX]);
   }
 
   if (prevX >= 0) {
     if (prevY >= 0) {
-      result.push(board[prevY][prevX]);
+      result.push(board[prevY]![prevX]);
     }
 
     if (nextY < maxY) {
-      result.push(board[nextY][prevX]);
+      result.push(board[nextY]![prevX]);
     }
   }
 
   if (nextX < maxX) {
     if (prevY >= 0) {
-      result.push(board[prevY][nextX]);
+      result.push(board[prevY]![nextX]);
     }
 
     if (nextY < maxY) {
-      result.push(board[nextY][nextX]);
+      result.push(board[nextY]![nextX]);
     }
   }
 

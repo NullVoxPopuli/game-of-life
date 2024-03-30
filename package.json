@@ -1,8 +1,8 @@
 {
-  "name": "polaris-starter",
+  "name": "life",
   "version": "0.0.0",
   "private": true,
-  "description": "Small description for polaris-starter goes here",
+  "description": "Conway's game of life",
   "repository": "",
   "license": "MIT",
   "author": "",

@@ -1,27 +1,33 @@
 import Component from '@glimmer/component';
+import { assert } from '@ember/debug';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { on } from '@ember/modifier';
 
+import type { StateService } from 'life/services/state';
+import type { DisplayService } from 'life/services/display';
+
 export class Lifetime extends Component {
-  @service state;
-  @service display;
+  @service declare state: StateService;
+  @service declare display: DisplayService;
 
   restart = () => {
-    let seed = this.display.seed;
-    this.state.reset();
-    this.state.restoreSeed(seed);
+    let config = this.display.boardConfig;
+    this.state.deleteHistory();
+    this.state.restore(config);
   };
 
-  updateDelay = (event) => {
+  updateDelay = (event: Event) => {
+    assert('[BUG]: callback should only be used on input elements', event.target instanceof HTMLInputElement);
+
     let ms = Number(event.target.value);
     this.display.setDelay(ms);
   };
 
-  @tracked frame;
+  @tracked frame: number | undefined;
   // timeout is used to artificially slow down
   // the animation
-  timeout;
+  timeout: number | undefined;
   get isPlaying() {
     return Boolean(this.frame);
   }
@@ -35,7 +41,10 @@ export class Lifetime extends Component {
     }
 
     const play = () => {
-      if (!this.state.hasAnyShape()) {
+      assert('[BUG]: Board not instantiate.', this.state._board);
+
+      if (!this.state._board.hasAnyShape()) {
+        this.frame = 1;
         return this.toggleAnimation();
       }
 

@@ -1,17 +1,22 @@
 import { createBoard, createRow, setCoordinates } from './helpers';
+import { assert } from '@ember/debug';
 import { Cell } from './cell';
+import type { CellUtil, Shape, At } from './types';
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 
 export class Board {
-  #stateService;
+  #util: CellUtil;
 
-  constructor(width, height, stateService) {
-    this.#stateService = stateService;
-    this.state = createBoard({ width, height, state: stateService });
+  state: Cell[][];
+
+  constructor(width: number, height: number, util: CellUtil) {
+    this.#util = util;
+    this.state = createBoard({ width, height, util });
   }
 
   get width() {
+    assert(`You may not access width before there are rows`, this.state[0]);
     return this.state[0].length;
   }
 
@@ -19,13 +24,14 @@ export class Board {
     return this.state.length;
   }
 
-  at = (x, y) => this.state[y][x];
+  at = (x: number, y: number) => this.state[y]?.[x];
 
   growLeft = () => {
     for (let y = 0; y < this.state.length; y++) {
-      let row = this.state[y];
+      const row = this.state[y];
+      assert(`Cannot grow left without a row`, row);
 
-      let cell = new Cell(NaN, y, this.#stateService);
+      const cell = new Cell(this.#util);
       row.unshift(cell);
     }
     this.updateCoordinates();
@@ -33,32 +39,35 @@ export class Board {
 
   growRight = () => {
     for (let y = 0; y < this.state.length; y++) {
-      let row = this.state[y];
+      const row = this.state[y];
+      assert(`Cannot grow right without a row`, row);
 
-      let cell = new Cell(NaN, y, this.#stateService);
+      const cell = new Cell(this.#util);
       row.push(cell);
     }
     this.updateCoordinates();
   };
 
   growUp = () => {
-    this.state.unshift(createRow({ width: this.width, state: this.#stateService }));
+    this.state.unshift(createRow({ width: this.width, util: this.#util }));
     this.updateCoordinates();
   };
 
   growDown = () => {
-    this.state.push(createRow({ width: this.width, state: this.#stateService }));
+    this.state.push(createRow({ width: this.width, util: this.#util }));
     this.updateCoordinates();
   };
   shrinkLeft = () => {
     for (let y = 0; y < this.state.length; y++) {
-      this.state[y].shift();
+      this.state[y]?.shift();
     }
+    this.updateCoordinates();
   };
   shrinkRight = () => {
     for (let y = 0; y < this.state.length; y++) {
-      this.state[y].pop();
+      this.state[y]?.pop();
     }
+    this.updateCoordinates();
   };
   shrinkDown = () => {
     this.state.pop();
@@ -71,30 +80,38 @@ export class Board {
 
   updateCoordinates = () => setCoordinates(this.state);
 
-  addShape = ({ shape, at }) => {
+  addShape = ({ shape, at }: { shape: Shape; at: At }) => {
     for (let y = 0; y < shape.length; y++) {
-      let row = shape[y];
+      const row = shape[y];
+      assert(`Cannot add shape without a row`, row);
       for (let x = 0; x < row.length; x++) {
-        let value = row[x];
-        this.state[at.y + y][at.x + x].alive = Boolean(value);
+        const value = row[x];
+        const cell = this.state[at.y + y]?.[at.x + x];
+
+        assert(`Cannot add shape without a cell`, cell);
+        cell.alive = Boolean(value);
       }
     }
   };
 
   hasAnyShape = () => {
-    let result = false;
+    for (let y = 0; y < this.state.length; y++) {
+      const row = this.state[y];
+      assert(`Cannot add shape without a row`, row);
+      for (let x = 0; x < row.length; x++) {
+        const cell = row[x];
 
-    this.eachCell(({ cell }) => {
-      if (cell.alive) {
-        result = true;
+        if (cell?.alive) {
+          return true;
+        }
       }
-    });
+    }
 
-    return result;
+    return false;
   };
 
   getSeed = () => {
-    let result = { x: [], y: [] };
+    const result: { x: number[]; y: number[]} = { x: [], y: [] };
 
     this.eachCell(({ x, y, cell }) => {
       if (cell.alive) {
@@ -103,15 +120,15 @@ export class Board {
       }
     });
 
-    let json = JSON.stringify(result);
+    const json = JSON.stringify(result);
     return compressToEncodedURIComponent(json);
   };
 
-  restoreSeed = (seed) => {
-    let coords = { x: [], y: [] };
+  restoreSeed = (seed: string) => {
+    let coords: { x: number[]; y: number[]} = { x: [], y: [] };
 
     try {
-      let json = decompressFromEncodedURIComponent(seed);
+      const json = decompressFromEncodedURIComponent(seed);
       coords = JSON.parse(json);
     } catch (e) {
       // TODO: toast messages
@@ -125,19 +142,21 @@ export class Board {
     }
 
     for (let i = 0; i < coords.x.length; i++) {
-      let x = coords.x[i];
-      let y = coords.y[i];
+      const x = coords.x[i] as number;
+      const y = coords.y[i] as number;
 
-      this.state[y][x].alive = true;
+      this.state[y]![x]!.alive = true;
     }
   };
 
-  eachCell = (callback) => {
+  eachCell = (callback: (options: { x: number; y: number; cell: Cell }) => void) => {
     for (let y = 0; y < this.state.length; y++) {
-      let row = this.state[y];
+      const row = this.state[y];
+      assert(`Cannot add shape without a row`, row);
       for (let x = 0; x < row.length; x++) {
-        let cell = row[x];
+        const cell = row[x];
 
+        assert(`Cannot add shape without a cell`, cell);
         callback({ x, y, cell });
       }
     }
@@ -145,11 +164,11 @@ export class Board {
 
   hasShape = ({ shape, at }) => {
     for (let y = 0; y < shape.length; y++) {
-      let row = shape[y];
+      const row = shape[y];
       for (let x = 0; x < row.length; x++) {
-        let value = row[x];
-        let alive = Boolean(value);
-        let current = this.state[at.y + y][at.x + x].alive;
+        const value = row[x];
+        const alive = Boolean(value);
+        const current = this.state[at.y + y]?.[at.x + x]?.alive;
 
         if (alive !== current) {
           return false;
@@ -161,14 +180,16 @@ export class Board {
   };
 
   shapeAt = ({ at, width, height }) => {
-    let result = [];
+    const result = [];
 
     for (let y = 0; y < height; y++) {
-      let row = [];
+      const row = [];
 
       for (let x = 0; x < width; x++) {
-        let value = this.state[at.y + y][at.x + x];
-        row.push(value.alive ? 1 : 0);
+        const cell = this.state[at.y + y]?.[at.x + x];
+
+        assert(`Cannot add shape without a cell`, cell);
+        row.push(cell.alive ? 1 : 0);
       }
 
       result.push(row);
@@ -186,14 +207,14 @@ export class Board {
     if (anotherBoard.length !== this.state.length) return false;
 
     for (let y = 0; y < anotherBoard.length; y++) {
-      let row = anotherBoard[y];
-      let ourRow = this.state[y];
+      const row = anotherBoard[y];
+      const ourRow = this.state[y];
 
       if (ourRow.length !== row.length) return false;
 
       for (let x = 0; x < row.length; x++) {
-        let anotherCell = row[x];
-        let ourCell = ourRow[x];
+        const anotherCell = row[x];
+        const ourCell = ourRow[x];
 
         if (!ourCell) return false;
         if (anotherCell.alive !== ourCell.alive) return false;
@@ -214,7 +235,7 @@ export class Board {
   log = () => {
     let str = '';
 
-    let board = this.state;
+    const board = this.state;
 
     board.forEach((row) => {
       row.forEach((cell) => {

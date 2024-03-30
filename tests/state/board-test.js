@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { Board } from 'polaris-starter/services/board';
+import { Board } from 'life/util/board';
 
 module('Board', function () {
   test('shapeAt works', function (assert) {

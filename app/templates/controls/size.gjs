@@ -83,6 +83,7 @@ export class Size extends Component {
     <style>
       .dimensions {
         display: grid;
+        gap: 0.25rem;
         grid-template-areas:
           ". t ."
           "l d r"
@@ -90,8 +91,19 @@ export class Size extends Component {
         ;
 
         .left, .top, .right, .bottom, .x-and-y {
-          display: flex;
+          display: grid;
+          gap: 0.25rem;
+          grid-auto-flow: column;
           align-items: center;
+        }
+        .left, .right {
+          grid-auto-flow: row;
+        }
+
+        button {
+          border: none;
+          width: 1.5rem;
+          height: 1.5rem;
         }
       }
       .top { grid-area: t; }
@@ -99,7 +111,7 @@ export class Size extends Component {
       .left { grid-area: l; }
       .right { grid-area: r; }
       .x-and-y {
-        grid-area: d; width: 2rem; height: 2rem;
+        grid-area: d;
         text-align: center;
     }
     </style>

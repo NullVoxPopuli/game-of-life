@@ -1,11 +1,21 @@
+import type RouterService from '@ember/routing/router-service';
 import Service, { service } from '@ember/service';
+import type { Board } from 'life/util/board';
+import type { BoardConfig } from 'life/util/types';
+
+type QPs = Record<string, string | number>;
+
+
+function boolToBinaryString(input: boolean) {
+  return input ? '1' : '0';
+}
 
 // Yes, state can be this easy!
-export default class Display extends Service {
-  @service router;
+export class DisplayService extends Service {
+  @service declare router: RouterService;
 
-  get queryParams() {
-    return this.router.currentRoute?.queryParams ?? {};
+  get queryParams(): QPs {
+    return ((this.router.currentRoute?.queryParams ?? {}) as QPs);
   }
 
   get showHistory() {
@@ -13,7 +23,7 @@ export default class Display extends Service {
   }
 
   get seed() {
-    return this.queryParams['seed'];
+    return String(this.queryParams['seed'] || '');
   }
 
   get hideLines() {
@@ -36,12 +46,20 @@ export default class Display extends Service {
     return Number(this.queryParams['height']) || 20;
   }
 
+  get boardConfig(): BoardConfig {
+    return {
+      width: this.width,
+      height: this.height,
+      seed: this.seed,
+    };
+  }
+
   /**
   * Allows batching QP updates
   */
-  #frame;
-  #qps;
-  #setQP = (qps) => {
+  #frame?: number;
+  #qps?: QPs;
+  #setQP = (qps: QPs) => {
     if (this.#frame) cancelAnimationFrame(this.#frame);
 
     this.#qps = {
@@ -57,8 +75,8 @@ export default class Display extends Service {
     });
   }
 
-  setWidth = (num) => this.#setQP({ width: num });
-  setHeight = (num) => this.#setQP({ height: num });
+  setWidth = (num: number) => this.#setQP({ width: num });
+  setHeight = (num: number) => this.#setQP({ height: num });
 
   toggleLines = () => this.#setQP({ hideLines: this.hideLines ? '0' : '1' });
   toggleIso = () => this.#setQP({ iso: this.iso ? '0' : '1' });
@@ -66,20 +84,26 @@ export default class Display extends Service {
   toggleHistory = () =>
     this.#setQP({
       showHistory: this.showHistory ? '0' : '1',
-      iso: this.showHistory ? this.iso : '0',
+      iso: this.showHistory ? boolToBinaryString(this.iso) : '0',
     });
 
-  updateSeed = (board) => {
+  updateSeed = (board: Board) => {
     this.#setQP({
       seed: board.getSeed(),
     });
   };
 
-  setDelay = (ms) => {
+  setDelay = (ms: number) => {
     this.#setQP({ delay: ms });
 
-    let s = ms / 1000;
+    const s = ms / 1000;
 
-    document.querySelector(':root').style.setProperty('--iteration-delay', `${s}s`);
+    const root = document.querySelector(':root');
+
+    if (root instanceof HTMLElement) {
+      root.style.setProperty('--iteration-delay', `${s}s`);
+    }
   };
 }
+
+export default DisplayService;

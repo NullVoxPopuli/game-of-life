@@ -3,12 +3,12 @@ import { service } from '@ember/service';
 import { on } from '@ember/modifier';
 
 import { Size } from './size';
+import type { StateService } from 'life/services/state';
+import type { DisplayService } from 'life/services/display';
 
 export class Config extends Component {
-  @service state;
-  @service display;
-
-  reset = () => this.state.reset();
+  @service declare state: StateService;
+  @service declare display: DisplayService;
 
   <template>
     <footer class="config">
@@ -37,9 +37,6 @@ export class Config extends Component {
           Show History
         {{/if}}
       </button>
-      <hr />
-
-      <button type="button" {{on "click" this.reset}}>Reset</button>
     </footer>
   </template>
 }

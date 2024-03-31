@@ -35,7 +35,7 @@ export class Cell {
 
   toggle = () => (this.alive = !this.alive);
 
-  get previous(): State.Cell | undefined  {
+  get previous(): State.Cell | undefined {
     assert('[BUG]: missing x', this.#x !== undefined);
     assert('[BUG]: missing y', this.#y !== undefined);
     return this.#util.previousCell(this.#x, this.#y);
@@ -49,7 +49,6 @@ export class Cell {
   set alive(value) {
     this.manuallySet = value;
   }
-
 
   get derivedAlive() {
     const previous = this.previous;
@@ -72,7 +71,6 @@ export class Cell {
 
     assert('[BUG]: missing x', this.#x !== undefined);
     assert('[BUG]: missing y', this.#y !== undefined);
-
 
     return findNeighbors({
       x: this.#x,

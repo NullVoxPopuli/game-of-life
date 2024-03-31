@@ -62,21 +62,19 @@ export class StateService extends Service {
     board.restoreSeed(config.seed);
 
     return board;
-  }
+  };
 
   createBoard = (x: number, y: number): Board => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const state = this;
-    return this._board = new Board(x, y, {
+    return (this._board = new Board(x, y, {
       previousCell: (x: number, y: number) => this.previous?.[y]?.[x],
 
       get previous() {
         return state.previous;
-      }
-    });
+      },
+    }));
   };
-
-
 
   #snapshot = () => {
     assert('Cannot access _board before it is created', this._board);

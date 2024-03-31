@@ -20,7 +20,7 @@ export function setCoordinates(boardState: ActiveBoardState) {
   }
 }
 
-export function createRow({ width, util }: { width: number, util: CellUtil }): Cell[] {
+export function createRow({ width, util }: { width: number; util: CellUtil }): Cell[] {
   const row = new TrackedArray();
 
   for (let x = 0; x < width; x++) {
@@ -33,7 +33,15 @@ export function createRow({ width, util }: { width: number, util: CellUtil }): C
   return row as Cell[];
 }
 
-export function createBoard({ width, height, util }: { width: number, height: number, util: CellUtil}): ActiveBoardState {
+export function createBoard({
+  width,
+  height,
+  util,
+}: {
+  width: number;
+  height: number;
+  util: CellUtil;
+}): ActiveBoardState {
   const board = new TrackedArray<Cell[]>();
   for (let y = 0; y < height; y++) {
     const row = createRow({ width, util });
@@ -92,7 +100,7 @@ export function ai(alive: boolean, liveNeighbors: number) {
  * ---
  * Extracted functions can easily be unit tested in isolation
  */
-export function findNeighbors({ x, y, board }: { x: number, y: number, board: State.Board}) {
+export function findNeighbors({ x, y, board }: { x: number; y: number; board: State.Board }) {
   const result = [];
 
   assert('[BUG]: should not call findNeighbors with no rows', board[0]);

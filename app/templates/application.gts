@@ -63,31 +63,27 @@ class Display extends Component {
         {{/each}}
       {{/if}}
 
-      <Grid
-        @board={{this.state.board}}
-        @index="var(--count)"
-        class={{if this.display.iso "iso"}}
-      />
+      <Grid @board={{this.state.board}} @index="var(--count)" class={{if this.display.iso "iso"}} />
     </div>
   </template>
 }
 
 const getRows = (board: State.Board) => board.length;
 const getColumns = (board: State.Board) => {
-    assert(`[BUG] can't have a board with no columns`, board[0]);
-    return board[0].length;
-}
+  assert(`[BUG] can't have a board with no columns`, board[0]);
+  return board[0].length;
+};
 
 function isHistoricalCell(cell: State.Cell | ActiveBoardState[0][0]): cell is State.Cell {
   return !('toggle' in cell);
-} 
+}
 
 class Grid extends Component<{
   Element: HTMLDivElement;
   Args: {
     board: State.Board | ActiveBoardState;
     index: string | number;
-  }
+  };
 }> {
   @service declare display: DisplayService;
 

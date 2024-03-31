@@ -111,7 +111,7 @@ export class Board {
   };
 
   getSeed = () => {
-    const result: { x: number[]; y: number[]} = { x: [], y: [] };
+    const result: { x: number[]; y: number[] } = { x: [], y: [] };
 
     this.eachCell(({ x, y, cell }) => {
       if (cell.alive) {
@@ -125,7 +125,7 @@ export class Board {
   };
 
   restoreSeed = (seed: string) => {
-    let coords: { x: number[]; y: number[]} = { x: [], y: [] };
+    let coords: { x: number[]; y: number[] } = { x: [], y: [] };
 
     try {
       const json = decompressFromEncodedURIComponent(seed);
@@ -162,7 +162,7 @@ export class Board {
     }
   };
 
-  hasShape = ({ shape, at }: {  shape: Shape; at: At}) => {
+  hasShape = ({ shape, at }: { shape: Shape; at: At }) => {
     for (let y = 0; y < shape.length; y++) {
       const row = shape[y];
       assert(`Cannot add shape without a row`, row);
@@ -180,7 +180,7 @@ export class Board {
     return true;
   };
 
-  shapeAt = ({ at, width, height }: { at: At, width: number, height: number}) => {
+  shapeAt = ({ at, width, height }: { at: At; width: number; height: number }) => {
     const result = [];
 
     for (let y = 0; y < height; y++) {

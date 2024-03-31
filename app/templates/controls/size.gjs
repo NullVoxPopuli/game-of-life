@@ -123,8 +123,8 @@ class SizeControls extends Component {
   dec = () => this.args.onChange(-1);
 
   <template>
-    <button aria-label="Increase" {{on "click" this.inc}}>+</button>
-    <button aria-label="Decrease" {{on "click" this.dec}}>-</button>
+    <button aria-label="Increase" type="button" {{on "click" this.inc}}>+</button>
+    <button aria-label="Decrease" type="button" {{on "click" this.dec}}>-</button>
   </template>
 }
 

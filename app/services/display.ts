@@ -5,7 +5,6 @@ import type { BoardConfig } from 'life/util/types';
 
 type QPs = Record<string, string | number>;
 
-
 function boolToBinaryString(input: boolean) {
   return input ? '1' : '0';
 }
@@ -15,7 +14,7 @@ export class DisplayService extends Service {
   @service declare router: RouterService;
 
   get queryParams(): QPs {
-    return ((this.router.currentRoute?.queryParams ?? {}) as QPs);
+    return (this.router.currentRoute?.queryParams ?? {}) as QPs;
   }
 
   get showHistory() {
@@ -55,8 +54,8 @@ export class DisplayService extends Service {
   }
 
   /**
-  * Allows batching QP updates
-  */
+   * Allows batching QP updates
+   */
   #frame?: number;
   #qps?: QPs;
   #setQP = (qps: QPs) => {
@@ -73,7 +72,7 @@ export class DisplayService extends Service {
         queryParams: this.#qps,
       });
     });
-  }
+  };
 
   setWidth = (num: number) => this.#setQP({ width: num });
   setHeight = (num: number) => this.#setQP({ height: num });

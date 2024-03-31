@@ -1,5 +1,5 @@
 :root {
-  --iteration-delay: 0.150s;
+  --iteration-delay: 0.15s;
   --size: 32px;
   --bg: #111;
 
@@ -55,7 +55,6 @@ button:focus-visible {
   outline-offset: 4px;
   border-radius: 2px;
 }
-
 
 header {
   position: fixed;
@@ -154,7 +153,7 @@ footer input[type="number"] {
   &.boards {
     display: flex;
     max-width: 100dvw;
-    padding-right: calc(9rem* var(--count));
+    padding-right: calc(9rem * var(--count));
 
     --translateX: 25%;
     --perspective: 1000px;
@@ -163,7 +162,7 @@ footer input[type="number"] {
 
   .board {
     /* transition: all 0.2s; */
-    transition: all 0.0s;
+    transition: all 0s;
     /* can't have filter, otherwise preserve-3d breaks */
     /* filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15)); */
     left: calc(7rem * var(--index) - 30rem);
@@ -214,7 +213,6 @@ footer input[type="number"] {
 
 .board {
   button {
-
     &.alive {
       --d: 1.5rem;
       transform: translateZ(var(--d));
@@ -266,4 +264,3 @@ footer input[type="number"] {
     }
   }
 }
-

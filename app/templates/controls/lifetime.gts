@@ -18,7 +18,10 @@ export class Lifetime extends Component {
   };
 
   updateDelay = (event: Event) => {
-    assert('[BUG]: callback should only be used on input elements', event.target instanceof HTMLInputElement);
+    assert(
+      '[BUG]: callback should only be used on input elements',
+      event.target instanceof HTMLInputElement
+    );
 
     let ms = Number(event.target.value);
     this.display.setDelay(ms);

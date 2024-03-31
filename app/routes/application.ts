@@ -4,7 +4,7 @@ import { service } from '@ember/service';
 import type { StateService } from 'life/services/state';
 import type { DisplayService } from 'life/services/display';
 
-type Transition = Parameters<Route['beforeModel']>[0]
+type Transition = Parameters<Route['beforeModel']>[0];
 
 export default class ApplicationRoute extends Route {
   @service declare state: StateService;

@@ -6,7 +6,7 @@ import type { DisplayService } from 'life/services/display';
 
 type Transition = Parameters<Route['beforeModel']>[0]
 
-export default class extends Route {
+export default class ApplicationRoute extends Route {
   @service declare state: StateService;
   @service declare display: DisplayService;
 

@@ -147,6 +147,7 @@ export class Board {
 
       this.state[y]![x]!.alive = true;
     }
+    this.updateCoordinates();
   };
 
   eachCell = (callback: (options: { x: number; y: number; cell: Cell }) => void) => {

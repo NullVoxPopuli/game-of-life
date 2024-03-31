@@ -9,7 +9,6 @@ import Route from 'ember-route-template';
 import { Controls } from './controls';
 import { Header } from './header';
 
-import type { Board } from 'life/util/board';
 import type { ActiveBoardState, State } from 'life/util/types';
 import type { StateService } from 'life/services/state';
 import type { DisplayService } from 'life/services/display';

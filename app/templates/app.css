@@ -2,11 +2,9 @@
   --iteration-delay: 0.15s;
   --size: 32px;
   --bg: #111;
-
   --bgr: 0;
   --bgg: 0;
   --bgb: 0;
-
   --fg: #fff;
   --fgr: 255;
   --fgg: 255;
@@ -48,9 +46,7 @@ body {
 a:focus-visible,
 input:focus-visible,
 button:focus-visible {
-  outline-width: 3px;
-  outline-style: solid;
-  outline-color: color(from var(--fg) srgb 0.8 0 b / 1);
+  outline: color(from var(--fg) srgb 0.8 0 b / 100%) solid 3px;
   z-index: 1;
   outline-offset: 4px;
   border-radius: 2px;
@@ -98,15 +94,15 @@ footer input[type="number"] {
   display: grid;
   grid-template-columns: repeat(var(--columns), 1fr);
   grid-template-rows: repeat(var(--rows), 1fr);
-
   transition: all 0.3s;
   z-index: 1;
-  border: 1px solid rgba(var(--fgr), var(--fgg), var(--fgb), 0.15);
+  border: 1px solid rgb(var(--fgr) var(--fgg) var(--fgb) / 15%);
 
   /* makes animating easier */
   position: absolute;
   top: 0;
   left: 0;
+
   /* we will need to maintain this offset */
   transform: translateX(-50%) translateY(-50%);
   transform-style: preserve-3d;
@@ -118,10 +114,11 @@ footer input[type="number"] {
       border: none !important;
 
       &::before {
-        border: 1px solid color(from var(--fg) srgb r g b / 0.65);
+        border: 1px solid color(from var(--fg) srgb r g b / 65%);
       }
+
       &::after {
-        border: 1px solid color(from var(--fg) srgb r g b / 0.65);
+        border: 1px solid color(from var(--fg) srgb r g b / 65%);
       }
     }
   }
@@ -136,15 +133,13 @@ footer input[type="number"] {
     z-index: 0;
 
     &:focus-visible {
-      outline-width: 3px;
-      outline-style: solid;
-      outline-color: color(from var(--fg) srgb 0.8 0 b / 1);
+      outline: color(from var(--fg) srgb 0.8 0 b / 100%) solid 3px;
       z-index: 1;
       outline-offset: 2px;
     }
 
     &.alive {
-      background: color(from var(--fg) srgb r g b / 1);
+      background: color(from var(--fg) srgb r g b / 100%);
     }
   }
 }
@@ -163,7 +158,9 @@ footer input[type="number"] {
   .board {
     /* transition: all 0.2s; */
     transition: all 0s;
+
     /* can't have filter, otherwise preserve-3d breaks */
+
     /* filter: drop-shadow(5px 11px 10px rgba(0, 0, 0, 0.15)); */
     left: calc(7rem * var(--index) - 30rem);
     transform:
@@ -189,21 +186,21 @@ footer input[type="number"] {
   &.show-lines {
     .board {
       button {
-        border: 1px solid color(from var(--fg) srgb r g b / 0.15);
+        border: 1px solid color(from var(--fg) srgb r g b / 15%);
         background: var(--bg);
 
         &.alive {
-          background: rgb(var(--fgr), var(--fgg), var(--fgb));
-          border: 1px solid color(from var(--bg) srgb r g b / 0.2);
+          background: rgb(var(--fgr) var(--fgg) var(--fgb));
+          border: 1px solid color(from var(--bg) srgb r g b / 20%);
         }
       }
 
       &.historical {
         button {
-          background: color(from var(--bg) srgb r g b / 0.85);
+          background: color(from var(--bg) srgb r g b / 85%);
 
           &.alive {
-            background: color(from var(--fg) srgb r g b / 0.85);
+            background: color(from var(--fg) srgb r g b / 85%);
           }
         }
       }
@@ -215,6 +212,7 @@ footer input[type="number"] {
   button {
     &.alive {
       --d: 1.5rem;
+
       transform: translateZ(var(--d));
 
       &::before,
@@ -229,6 +227,7 @@ footer input[type="number"] {
       &::before {
         width: var(--d);
         background: color(from var(--fg) srgb 0.9 0.8 0.8);
+
         /* background: rgba(50,50,50,1); */
         top: 0;
         transform-origin: left;
@@ -238,6 +237,7 @@ footer input[type="number"] {
       &::after {
         height: var(--d);
         background: color(from var(--fg) srgb 0.7 0.7 0.9);
+
         /* background: rgba(30,30,30,1); */
         right: 0;
         transform-origin: bottom;
@@ -248,16 +248,18 @@ footer input[type="number"] {
 
   &.historical {
     button {
-      background: color(from var(--bg) srgb r g b / 0.9);
+      background: color(from var(--bg) srgb r g b / 90%);
     }
 
     button.alive {
-      background: color(from var(--fg) srgb r g b / 0.9);
+      background: color(from var(--fg) srgb r g b / 90%);
+
       /* background: rgba(0,0,0,0.9); */
 
       &::after {
         background: color(from var(--fg) srgb 0.7 0.7 0.9);
       }
+
       &::before {
         background: color(from var(--fg) srgb 0.9 0.8 0.8);
       }

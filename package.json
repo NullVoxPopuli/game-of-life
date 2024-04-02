@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "ember serve",
+    "build": "ember build --environment=production",
     "_build": "vite build",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
     "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
@@ -24,8 +25,8 @@
     "lint:types": "glint",
     "_start": "vite",
     "_start:test": "vite --open /tests/",
-    "_test": "pnpm test:ember",
-    "_test:ember": "node ./scripts/run-tests.mjs"
+    "test": "pnpm test:ember",
+    "test:ember": "node ./scripts/run-tests.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",

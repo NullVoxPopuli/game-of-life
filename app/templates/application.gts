@@ -48,6 +48,7 @@ class Display extends Component {
   }
 
   <template>
+    {{! template-lint-disable style-concatenation }}
     <div
       class="boards
         {{if this.isShowingHistory 'showing-history'}}
@@ -87,6 +88,7 @@ class Grid extends Component<{
   @service declare display: DisplayService;
 
   <template>
+    {{! template-lint-disable style-concatenation }}
     <div
       class="board"
       style="

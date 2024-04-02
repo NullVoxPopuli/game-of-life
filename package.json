@@ -26,7 +26,8 @@
     "_start": "vite",
     "_start:test": "vite --open /tests/",
     "test": "pnpm test:ember",
-    "test:ember": "node ./scripts/run-tests.mjs"
+    "_test:ember": "node ./scripts/run-tests.mjs",
+    "test:ember": "ember test --test-port 0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",

@@ -6,13 +6,22 @@ module.exports = {
       files: ['**/*.{js,ts}'],
       plugins: ['ember'],
       parser: '@typescript-eslint/parser',
-      extends: ['eslint:recommended', 'plugin:ember/recommended'],
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:ember/recommended',
+      ],
     },
     {
       files: ['**/*.gts'],
       parser: 'ember-eslint-parser',
       plugins: ['ember'],
-      extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:ember/recommended-gts'],
+      extends: [
+        'eslint:recommended',
+        'plugin:ember/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:ember/recommended-gts',
+      ],
     },
     {
       files: ['**/*.gjs'],
@@ -25,13 +34,22 @@ module.exports = {
       files: ['tests/**/*-test.{js,ts}'],
       plugins: ['ember'],
       parser: '@typescript-eslint/parser',
-      extends: ['eslint:recommended', 'plugin:qunit/recommended'],
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:qunit/recommended',
+      ],
     },
     {
       files: ['tests/**/*-test.{gjs,gts}'],
       parser: 'ember-eslint-parser',
       plugins: ['ember'],
-      extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:ember/recommended-gts'],
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:ember/recommended',
+        'plugin:ember/recommended-gts',
+      ],
     },
     // node files
     {

@@ -1,5 +1,6 @@
 import './app.css';
 
+import { assert } from '@ember/debug';
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { pageTitle } from 'ember-page-title';
@@ -7,6 +8,10 @@ import Route from 'ember-route-template';
 
 import { Controls } from './controls';
 import { Header } from './header';
+
+import type { ActiveBoardState, State } from 'life/util/types';
+import type { StateService } from 'life/services/state';
+import type { DisplayService } from 'life/services/display';
 
 export default Route(
   <template>
@@ -22,23 +27,18 @@ export default Route(
   </template>
 );
 
-const addOne = (n) => n + 1;
+const addOne = (n: number) => n + 1;
 
-// let frame;
 const scrollToRight = () => {
-  // if (frame) cancelAnimationFrame(frame);
-
-  // frame = requestAnimationFrame(() => {
-  document.body.parentElement.scrollTo({
+  document.body.parentElement?.scrollTo({
     behavior: 'instant',
     left: document.body.scrollWidth,
   });
-  // });
 };
 
 class Display extends Component {
-  @service state;
-  @service display;
+  @service declare state: StateService;
+  @service declare display: DisplayService;
 
   get isShowingHistory() {
     return this.display.showHistory;
@@ -48,6 +48,7 @@ class Display extends Component {
   }
 
   <template>
+    {{! template-lint-disable style-concatenation }}
     <div
       class="boards
         {{if this.isShowingHistory 'showing-history'}}
@@ -57,28 +58,37 @@ class Display extends Component {
     >
       {{#if this.isShowingHistory}}
         {{#each this.state.history as |board i|}}
-          <Board @board={{board}} @index={{addOne i}} class="historical" />
+          <Grid @board={{board}} @index={{addOne i}} class="historical" />
           {{(scrollToRight)}}
         {{/each}}
       {{/if}}
 
-      <Board
-        @board={{this.state.board}}
-        @index="var(--count)"
-        class={{if this.display.iso "iso"}}
-      />
+      <Grid @board={{this.state.board}} @index="var(--count)" class={{if this.display.iso "iso"}} />
     </div>
   </template>
 }
 
-const getRows = (board) => board.length;
-const getColumns = (board) => board[0].length;
+const getRows = (board: State.Board) => board.length;
+const getColumns = (board: State.Board) => {
+  assert(`[BUG] can't have a board with no columns`, board[0]);
+  return board[0].length;
+};
 
-class Board extends Component {
-  @service state;
-  @service display;
+function isHistoricalCell(cell: State.Cell | ActiveBoardState[0][0]): cell is State.Cell {
+  return !('toggle' in cell);
+}
+
+class Grid extends Component<{
+  Element: HTMLDivElement;
+  Args: {
+    board: State.Board | ActiveBoardState;
+    index: string | number;
+  };
+}> {
+  @service declare display: DisplayService;
 
   <template>
+    {{! template-lint-disable style-concatenation }}
     <div
       class="board"
       style="
@@ -86,20 +96,15 @@ class Board extends Component {
         --columns: {{getColumns @board}};
         --rows: {{getRows @board}};
       "
-      onauxclick={{this.display.toggleISO}}
       ...attributes
     >
       {{#each @board as |row|}}
         {{#each row as |cell|}}
-          {{#if cell.toggle}}
-            <button
-              class={{if cell.alive "alive"}}
-              onclick={{cell.toggle}}
-              aria-label="Cell for {{cell.label}}"
-              type="button"
-            ></button>
-          {{else}}
+          {{#if (isHistoricalCell cell)}}
             <button class={{if cell.alive "alive"}} disabled type="button"></button>
+          {{else}}
+            {{! @glint-expect-error -- glint is wrong and is losing the type on the each }}
+            <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
           {{/if}}
         {{/each}}
       {{/each}}

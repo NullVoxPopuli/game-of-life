@@ -1,8 +1,8 @@
 {
-  "name": "polaris-starter",
+  "name": "life",
   "version": "0.0.0",
   "private": true,
-  "description": "Small description for polaris-starter goes here",
+  "description": "Conway's game of life",
   "repository": "",
   "license": "MIT",
   "author": "",
@@ -12,10 +12,9 @@
   },
   "scripts": {
     "start": "ember serve",
+    "build": "ember build --environment=production",
     "_build": "vite build",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
-    "lint:css": "stylelint \"**/*.css\"",
-    "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
     "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
     "lint:hbs": "ember-template-lint .",
     "lint:hbs:fix": "ember-template-lint . --fix",
@@ -26,8 +25,9 @@
     "lint:types": "glint",
     "_start": "vite",
     "_start:test": "vite --open /tests/",
-    "_test": "pnpm test:ember",
-    "_test:ember": "node ./scripts/run-tests.mjs"
+    "test": "pnpm test:ember",
+    "_test:ember": "node ./scripts/run-tests.mjs",
+    "test:ember": "ember test --test-port 0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
@@ -46,11 +46,11 @@
     "@glint/environment-ember-template-imports": "^1.4.0",
     "@glint/template": "^1.4.0",
     "@rollup/plugin-babel": "^6.0.4",
-    "@tsconfig/ember": "^3.0.5",
+    "@tsconfig/ember": "^3.0.6",
     "@types/qunit": "^2.19.10",
     "@types/rsvp": "^4.0.9",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "concurrently": "^8.2.2",
     "ember-auto-import": "^2.7.2",
     "ember-cli": "~5.7.0",
@@ -64,7 +64,7 @@
     "ember-resolver": "^11.0.1",
     "ember-source": "~5.7.0",
     "ember-template-imports": "^4.1.0",
-    "ember-template-lint": "^5.13.0",
+    "ember-template-lint": "^6.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-ember": "^12.0.2",
@@ -77,12 +77,12 @@
     "puppeteer-chromium-resolver": "^22.0.0",
     "qunit": "^2.20.1",
     "qunit-dom": "^3.0.0",
-    "stylelint": "^16.3.0",
+    "stylelint": "^16.3.1",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-prettier": "^5.0.0",
     "tracked-built-ins": "^3.1.1",
     "typescript": "^5.4.3",
-    "vite": "^5.2.6"
+    "vite": "^5.2.7"
   },
   "packageManager": "pnpm@8.9.0",
   "pnpm": {
@@ -137,6 +137,6 @@
   },
   "volta": {
     "node": "18.17.0",
-    "pnpm": "8.12.1"
+    "pnpm": "8.15.5"
   }
 }

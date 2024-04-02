@@ -1,3 +1,7 @@
+# TODO: bugs in prettier plugin
+app/templates/controls/size.gjs
+
+
 # unconventional js
 /blueprints/*/files/
 

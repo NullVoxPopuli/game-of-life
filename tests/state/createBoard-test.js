@@ -1,4 +1,4 @@
-import { createBoard } from 'polaris-starter/services/helpers';
+import { createBoard } from 'life/util/helpers';
 import QUnit, { module, test } from 'qunit';
 
 function assertDimensions(board, width, height) {

@@ -1,4 +1,4 @@
-import { findNeighbors, createBoard } from 'polaris-starter/services/helpers';
+import { findNeighbors, createBoard } from 'life/util/helpers';
 import { module, test } from 'qunit';
 
 module('findNeighbors()', function () {

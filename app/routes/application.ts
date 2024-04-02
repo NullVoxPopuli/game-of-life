@@ -1,9 +1,14 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 
-export default class extends Route {
-  @service state;
-  @service display;
+import type { StateService } from 'life/services/state';
+import type { DisplayService } from 'life/services/display';
+
+type Transition = Parameters<Route['beforeModel']>[0];
+
+export default class ApplicationRoute extends Route {
+  @service declare state: StateService;
+  @service declare display: DisplayService;
 
   queryParams = {
     delay: { refreshModel: false },
@@ -15,19 +20,19 @@ export default class extends Route {
     seed: { refreshModel: false },
   };
 
-  beforeModel(transition) {
-    let { width, height, seed, delay } = transition.to.queryParams || {};
-
-    this.state.createBoard(Number(width) || 20, Number(height) || 20);
+  beforeModel(transition: Transition) {
+    const { width, height, seed, delay } = transition.to?.queryParams || {};
 
     this.display.setDelay(Number(delay));
 
-    if (seed) {
-      return this.state.restoreSeed(seed);
-    }
+    const board = this.state.restore({
+      width: Number(width) || 20,
+      height: Number(height) || 20,
+      seed: String(seed || ''),
+    });
 
     if (!seed) {
-      this.state.addShape({
+      board.addShape({
         shape: [
           [0, 1, 0],
           [1, 1, 1],
@@ -35,7 +40,7 @@ export default class extends Route {
         at: { x: 5, y: 5 },
       });
 
-      this.state.addShape({
+      board.addShape({
         shape: [
           [0, 1],
           [1, 0],
@@ -45,7 +50,7 @@ export default class extends Route {
       });
 
       // "still-life"
-      this.state.addShape({
+      board.addShape({
         shape: [
           [1, 1],
           [1, 1],
@@ -54,7 +59,7 @@ export default class extends Route {
       });
 
       // "glider"
-      this.state.addShape({
+      board.addShape({
         shape: [
           [0, 1, 0],
           [0, 0, 1],
@@ -64,7 +69,7 @@ export default class extends Route {
       });
 
       // Acorn
-      this.state.addShape({
+      board.addShape({
         shape: [
           [0, 1, 0, 0, 0, 0, 0],
           [0, 0, 0, 1, 0, 0, 0],

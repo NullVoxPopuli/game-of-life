@@ -129,7 +129,10 @@ export class Board {
 
     try {
       const json = decompressFromEncodedURIComponent(seed);
-      coords = JSON.parse(json);
+      const parsed = JSON.parse(json);
+      if (parsed) {
+        coords = parsed;
+      }
     } catch (e) {
       // TODO: toast messages
       console.error(e);

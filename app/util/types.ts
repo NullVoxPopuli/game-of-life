@@ -1,9 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace State {
-  export interface Cell {
-    alive: boolean;
-  }
-
+  export type Cell = boolean;
   export type Board = Cell[][];
 }
 

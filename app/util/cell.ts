@@ -19,16 +19,16 @@ export class Cell {
   }
 
   toJSON() {
-    return {
-      // Is there any benefit to this just being a boolean?
-      // rather than an object with one property?
-      alive: this.alive,
-      // This state probably isn't needed,
-      // as it's encoded via containing array index.
-      // It may be useful for debugging if things get out of order.
-      // x: this.#x,
-      // y: this.#y,
-    };
+    // Is there any downside to just returning the boolean?
+    return this.alive;
+    // return {
+    //   alive: this.alive,
+    //   // This state probably isn't needed,
+    //   // as it's encoded via containing array index.
+    //   // It may be useful for debugging if things get out of order.
+    //   // x: this.#x,
+    //   // y: this.#y,
+    // };
   }
 
   @tracked manuallySet?: boolean;
@@ -57,9 +57,9 @@ export class Cell {
       return this.manuallySet ?? false;
     }
 
-    const liveNeighbors = this.neighbors.filter((n) => n.alive).length;
+    const liveNeighbors = this.neighbors.filter(Boolean).length;
 
-    return ai(previous.alive, liveNeighbors);
+    return ai(previous, liveNeighbors);
   }
 
   get neighbors(): State.Cell[] {

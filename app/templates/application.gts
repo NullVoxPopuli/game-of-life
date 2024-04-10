@@ -68,14 +68,21 @@ class Display extends Component {
   </template>
 }
 
-const getRows = (board: State.Board) => board.length;
-const getColumns = (board: State.Board) => {
+const getRows = (board: unknown[]) => board.length;
+const getColumns = (board: unknown[][]) => {
   assert(`[BUG] can't have a board with no columns`, board[0]);
   return board[0].length;
 };
 
 function isHistoricalCell(cell: State.Cell | ActiveBoardState[0][0]): cell is State.Cell {
-  return !('toggle' in cell);
+  return typeof cell === 'boolean';
+}
+
+function isHistoricalBoard(board: State.Board | ActiveBoardState): board is State.Board {
+    let cell = board[0]?.[0];
+    assert(`[BUG] can't have board with no cells`, cell);
+    return isHistoricalCell(cell);
+
 }
 
 class Grid extends Component<{
@@ -98,16 +105,23 @@ class Grid extends Component<{
       "
       ...attributes
     >
-      {{#each @board as |row|}}
-        {{#each row as |cell|}}
-          {{#if (isHistoricalCell cell)}}
-            <button class={{if cell.alive "alive"}} disabled type="button"></button>
-          {{else}}
-            {{! @glint-expect-error -- glint is wrong and is losing the type on the each }}
-            <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
-          {{/if}}
+      {{#if (isHistoricalBoard @board)}}
+
+        {{#each @board as |row|}}
+          {{#each row as |cell|}}
+            <button class={{if cell "alive"}} disabled></button>
+          {{/each}}
         {{/each}}
-      {{/each}}
+
+      {{else}}
+
+        {{#each @board as |row|}}
+          {{#each row as |cell|}}
+            <button class={{if cell.alive "alive"}} onclick={{cell.toggle}}></button>
+          {{/each}}
+        {{/each}}
+
+      {{/if}}
     </div>
   </template>
 }

@@ -224,8 +224,7 @@ export class Board {
         const ourCell = ourRow[x];
 
         if (!ourCell) return false;
-        if (!anotherCell) return false;
-        if (anotherCell.alive !== ourCell.alive) return false;
+        if (anotherCell !== ourCell.alive) return false;
       }
     }
 

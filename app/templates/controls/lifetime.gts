@@ -30,29 +30,23 @@ export class Lifetime extends Component {
   @tracked frame: number | undefined;
   // timeout is used to artificially slow down
   // the animation
-  timeout: number | undefined;
+  // (computers are too fast (60fps is ~ 16.67ms per frame)
+  @tracked timeout: number | undefined;
+
   get isPlaying() {
-    return Boolean(this.frame);
+    return this.frame !== undefined || this.timeout !== undefined;
   }
 
-  toggleAnimation = () => {
-    if (this.frame) {
-      cancelAnimationFrame(this.frame);
-      clearTimeout(this.timeout);
-      this.frame = undefined;
-      return;
-    }
-
+  start = () => {
     const play = () => {
       assert('[BUG]: Board not instantiate.', this.state._board);
 
       if (!this.state._board.hasAnyShape()) {
-        this.frame = 1;
-        return this.toggleAnimation();
+        return this.stop();
       }
 
       if (this.state.isStable) {
-        this.toggleAnimation();
+        this.stop();
       }
 
       this.state.passTime();
@@ -61,8 +55,27 @@ export class Lifetime extends Component {
       }, this.display.delay);
     };
 
-    this.state.history.length = 0;
     this.frame = requestAnimationFrame(play);
+  };
+
+  stop = () => {
+    if (this.frame !== undefined) {
+      cancelAnimationFrame(this.frame);
+      this.frame = undefined;
+    }
+
+    if (this.timeout !== undefined) {
+      clearTimeout(this.timeout);
+      this.timeout = undefined;
+    }
+  };
+
+  toggleAnimation = () => {
+    if (this.isPlaying) {
+      return this.stop();
+    }
+
+    this.start();
   };
 
   <template>

@@ -56,7 +56,7 @@ export class Lifetime extends Component {
     };
 
     this.frame = requestAnimationFrame(play);
-  }
+  };
 
   stop = () => {
     if (this.frame !== undefined) {
@@ -68,8 +68,7 @@ export class Lifetime extends Component {
       clearTimeout(this.timeout);
       this.timeout = undefined;
     }
-  }
-
+  };
 
   toggleAnimation = () => {
     if (this.isPlaying) {

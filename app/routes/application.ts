@@ -10,10 +10,10 @@ const BUTTON_SIZE = 32; // px
 const PADDING = 6; // buttons
 
 function maxWidth() {
-  return Math.floor((window.innerWidth - (PADDING * BUTTON_SIZE)) / BUTTON_SIZE)
+  return Math.floor((window.innerWidth - PADDING * BUTTON_SIZE) / BUTTON_SIZE);
 }
-function maxHeight () {
-  return Math.floor((window.innerHeight - (PADDING * BUTTON_SIZE)) / BUTTON_SIZE)
+function maxHeight() {
+  return Math.floor((window.innerHeight - PADDING * BUTTON_SIZE) / BUTTON_SIZE);
 }
 
 function randomXYWithin(width: number, height: number) {
@@ -43,13 +43,11 @@ export default class ApplicationRoute extends Route {
 
     this.display.setDelay(Number(delay) || 150);
 
-
     const board = this.state.restore({
       width: Number(width) || maxWidth(),
       height: Number(height) || maxHeight(),
       seed: String(seed || ''),
     });
-
 
     if (!seed) {
       board.addShape({
@@ -57,7 +55,7 @@ export default class ApplicationRoute extends Route {
           [0, 1, 0],
           [1, 1, 1],
         ],
-        at: randomXYWithin(board.width - 3, board.height - 2)
+        at: randomXYWithin(board.width - 3, board.height - 2),
       });
 
       board.addShape({
@@ -66,7 +64,7 @@ export default class ApplicationRoute extends Route {
           [1, 0],
           [1, 0],
         ],
-        at: randomXYWithin(board.width - 2, board.height - 3)
+        at: randomXYWithin(board.width - 2, board.height - 3),
       });
 
       // "still-life"
@@ -75,7 +73,7 @@ export default class ApplicationRoute extends Route {
           [1, 1],
           [1, 1],
         ],
-        at: randomXYWithin(board.width - 2, board.height - 2)
+        at: randomXYWithin(board.width - 2, board.height - 2),
       });
 
       // "glider"
@@ -95,7 +93,7 @@ export default class ApplicationRoute extends Route {
           [0, 0, 0, 1, 0, 0, 0],
           [1, 1, 0, 0, 1, 1, 1],
         ],
-        at: randomXYWithin(board.width - 7, board.height - 3)
+        at: randomXYWithin(board.width - 7, board.height - 3),
       });
     }
   }

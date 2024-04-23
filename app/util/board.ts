@@ -83,12 +83,14 @@ export class Board {
   addShape = ({ shape, at }: { shape: Shape; at: At }) => {
     for (let y = 0; y < shape.length; y++) {
       const row = shape[y];
-      assert(`Cannot add shape without a row`, row);
+      if (!row) continue;
+
       for (let x = 0; x < row.length; x++) {
         const value = row[x];
         const cell = this.state[at.y + y]?.[at.x + x];
 
-        assert(`Cannot add shape without a cell`, cell);
+        if (!cell) continue;
+
         cell.alive = Boolean(value);
       }
     }

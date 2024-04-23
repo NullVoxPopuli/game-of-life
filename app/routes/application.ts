@@ -8,6 +8,7 @@ type Transition = Parameters<Route['beforeModel']>[0];
 
 const BUTTON_SIZE = 32; // px
 const PADDING = 6; // buttons
+const MIN_DIMENSION = 5;
 
 function maxWidth() {
   return Math.floor((window.innerWidth - PADDING * BUTTON_SIZE) / BUTTON_SIZE);
@@ -44,8 +45,8 @@ export default class ApplicationRoute extends Route {
     this.display.setDelay(Number(delay) || 150);
 
     const board = this.state.restore({
-      width: Number(width) || maxWidth(),
-      height: Number(height) || maxHeight(),
+      width: Number(width) || maxWidth() || MIN_DIMENSION,
+      height: Number(height) || maxHeight() || MIN_DIMENSION,
       seed: String(seed || ''),
     });
 

@@ -18,49 +18,49 @@ export class Size extends Component {
     this.state.deleteHistory();
 
     if (diff < 0) {
-      this.state._board.shrinkUp();
+      this.state.board.shrinkUp();
     } else {
-      this.state._board.growUp();
+      this.state.board.growUp();
     }
 
-    this.display.setHeight(this.state._board.height);
-    this.display.updateSeed(this.state._board);
+    this.display.setHeight(this.state.board.height);
+    this.display.updateSeed(this.state.board);
   };
   handleBottom = (diff) => {
     this.state.deleteHistory();
 
     if (diff < 0) {
-      this.state._board.shrinkDown();
+      this.state.board.shrinkDown();
     } else {
-      this.state._board.growDown();
+      this.state.board.growDown();
     }
 
-    this.display.setHeight(this.state._board.height);
-    this.display.updateSeed(this.state._board);
+    this.display.setHeight(this.state.board.height);
+    this.display.updateSeed(this.state.board);
   };
   handleLeft = (diff) => {
     this.state.deleteHistory();
 
     if (diff < 0) {
-      this.state._board.shrinkLeft();
+      this.state.board.shrinkLeft();
     } else {
-      this.state._board.growLeft();
+      this.state.board.growLeft();
     }
 
-    this.display.setWidth(this.state._board.width);
-    this.display.updateSeed(this.state._board);
+    this.display.setWidth(this.state.board.width);
+    this.display.updateSeed(this.state.board);
   };
   handleRight = (diff) => {
     this.state.deleteHistory();
 
     if (diff < 0) {
-      this.state._board.shrinkRight();
+      this.state.board.shrinkRight();
     } else {
-      this.state._board.growRight();
+      this.state.board.growRight();
     }
 
-    this.display.setWidth(this.state._board.width);
-    this.display.updateSeed(this.state._board);
+    this.display.setWidth(this.state.board.width);
+    this.display.updateSeed(this.state.board);
   };
 
   <template>
@@ -71,7 +71,7 @@ export class Size extends Component {
       <div class="left">
         <SizeControls @onChange={{this.handleLeft}}  />
       </div>
-      <div class="x-and-y">{{this.state._board.width}}x{{this.state._board.height}}</div>
+      <div class="x-and-y">{{this.state.board.width}}x{{this.state.board.height}}</div>
       <div class="right">
         <SizeControls @onChange={{this.handleRight}}  />
       </div>

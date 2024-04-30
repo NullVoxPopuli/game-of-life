@@ -39,9 +39,7 @@ export class Lifetime extends Component {
 
   start = () => {
     const play = () => {
-      assert('[BUG]: Board not instantiate.', this.state._board);
-
-      if (!this.state._board.hasAnyShape()) {
+      if (!this.state.board.hasAnyShape()) {
         return this.stop();
       }
 

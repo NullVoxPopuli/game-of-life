@@ -18,19 +18,19 @@ module('State', function (hooks) {
 
     assert.notEqual(state.previous, undefined);
     assert.strictEqual(state.history.length, 1);
-    assert.deepEqual(state.previous, state._board.toJSON());
+    assert.deepEqual(state.previous, state.board.toJSON());
 
     state.passTime();
 
     assert.notEqual(state.previous, undefined);
     assert.strictEqual(state.history.length, 2);
-    assert.deepEqual(state.previous, state._board.toJSON());
-    assert.deepEqual(state.history[0], state._board.toJSON());
-    assert.deepEqual(state.history[1], state._board.toJSON());
+    assert.deepEqual(state.previous, state.board.toJSON());
+    assert.deepEqual(state.history[0], state.board.toJSON());
+    assert.deepEqual(state.history[1], state.board.toJSON());
   });
 
   test('triomino 1', function (assert) {
-    state._board.addShape({
+    state.board.addShape({
       shape: [
         [0, 1],
         [1, 0],
@@ -39,7 +39,7 @@ module('State', function (hooks) {
       at: { x: 0, y: 0 },
     });
 
-    assert.deepEqual(state._board.shapeAt({ at: { x: 0, y: 0 }, width: 2, height: 3 }), [
+    assert.deepEqual(state.board.shapeAt({ at: { x: 0, y: 0 }, width: 2, height: 3 }), [
       [0, 1],
       [1, 0],
       [1, 0],
@@ -47,7 +47,7 @@ module('State', function (hooks) {
 
     state.passTime();
 
-    assert.deepEqual(state._board.shapeAt({ at: { x: 0, y: 0 }, width: 2, height: 3 }), [
+    assert.deepEqual(state.board.shapeAt({ at: { x: 0, y: 0 }, width: 2, height: 3 }), [
       [0, 0],
       [1, 1],
       [0, 0],

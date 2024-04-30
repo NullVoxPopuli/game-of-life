@@ -82,7 +82,7 @@ export function ai(alive: boolean, liveNeighbors: number) {
     return liveNeighbors === 3;
   }
 
-  return alive && (liveNeighbors === 2 || liveNeighbors === 3);
+  return liveNeighbors === 2 || liveNeighbors === 3;
 }
 
 /**

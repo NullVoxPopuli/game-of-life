@@ -9,6 +9,7 @@ import Route from 'ember-route-template';
 import { Controls } from './controls';
 import { Header } from './header';
 
+import type { TOC } from '@ember/component/template-only';
 import type { ActiveBoardState, State } from 'life/util/types';
 import type { StateService } from 'life/services/state';
 import type { DisplayService } from 'life/services/display';
@@ -48,7 +49,6 @@ class Display extends Component {
   }
 
   <template>
-    {{! template-lint-disable style-concatenation }}
     <div
       class="boards
         {{if this.isShowingHistory 'showing-history'}}
@@ -58,12 +58,16 @@ class Display extends Component {
     >
       {{#if this.isShowingHistory}}
         {{#each this.state.history as |board i|}}
-          <Grid @board={{board}} @index={{addOne i}} class="historical" />
+          <HistoricalGrid @board={{board}} @index={{addOne i}} />
           {{(scrollToRight)}}
         {{/each}}
       {{/if}}
 
-      <Grid @board={{this.state.board}} @index="var(--count)" class={{if this.display.iso "iso"}} />
+      <Grid
+        @board={{this.state.currentState}}
+        @index="var(--count)"
+        class={{if this.display.iso "iso"}}
+      />
     </div>
   </template>
 }
@@ -74,40 +78,48 @@ const getColumns = (board: State.Board) => {
   return board[0].length;
 };
 
-function isHistoricalCell(cell: State.Cell | ActiveBoardState[0][0]): cell is State.Cell {
-  return !('toggle' in cell);
-}
-
-class Grid extends Component<{
+const Grid: TOC<{
   Element: HTMLDivElement;
   Args: {
-    board: State.Board | ActiveBoardState;
+    board: ActiveBoardState;
     index: string | number;
   };
-}> {
-  @service declare display: DisplayService;
-
-  <template>
-    {{! template-lint-disable style-concatenation }}
-    <div
-      class="board"
-      style="
+}> = <template>
+  <div
+    class="board"
+    style="
         --index: {{@index}};
         --columns: {{getColumns @board}};
         --rows: {{getRows @board}};
       "
-      ...attributes
-    >
-      {{#each @board as |row|}}
-        {{#each row as |cell|}}
-          {{#if (isHistoricalCell cell)}}
-            <button class={{if cell.alive "alive"}} disabled type="button"></button>
-          {{else}}
-            {{! @glint-expect-error -- glint is wrong and is losing the type on the each }}
-            <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
-          {{/if}}
-        {{/each}}
+    ...attributes
+  >
+    {{#each @board as |row|}}
+      {{#each row as |cell|}}
+        <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
       {{/each}}
-    </div>
-  </template>
-}
+    {{/each}}
+  </div>
+</template>;
+
+const HistoricalGrid: TOC<{
+  Args: {
+    board: State.Board;
+    index: string | number;
+  };
+}> = <template>
+  <div
+    class="board historical"
+    style="
+        --index: {{@index}};
+        --columns: {{getColumns @board}};
+        --rows: {{getRows @board}};
+      "
+  >
+    {{#each @board as |row|}}
+      {{#each row as |cell|}}
+        <button class={{if cell.alive "alive"}} disabled type="button"></button>
+      {{/each}}
+    {{/each}}
+  </div>
+</template>;

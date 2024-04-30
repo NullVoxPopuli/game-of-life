@@ -4,6 +4,8 @@ export default {
     // Polaris allows <style> tags
     //   https://github.com/ember-template-lint/ember-template-lint/blob/master/lib/rules/no-forbidden-elements.js
     "no-forbidden-elements": ["error", { forbidden: ["meta", "html", "script"] }],
+    // Security, but I have no user input that can be exploited
+    "style-concatenation": false,
   },
   overrides: [
     {
@@ -11,8 +13,6 @@ export default {
       rules: {
         // Stylistic
         "no-inline-styles": false,
-        // Security, but I have no user input that can be exploited
-        "style-concetenation": false,
       },
     },
   ],

@@ -12,8 +12,6 @@ import type { DisplayService } from 'life/services/display';
 export class StateService extends Service {
   @service declare display: DisplayService;
 
-  @tracked _board: Board | undefined;
-
   history = new TrackedArray<State.Board>();
 
   constructor(owner: Owner) {
@@ -26,7 +24,7 @@ export class StateService extends Service {
         const element = event.target?.parentElement;
         if (element instanceof HTMLElement) {
           if (element.classList.contains('board')) {
-            this.display.updateSeed(this._board);
+            this.display.updateSeed(this.board);
           }
         }
       }
@@ -37,23 +35,27 @@ export class StateService extends Service {
     registerDestructor(this, () => document.removeEventListener('click', handleClick));
   }
 
+  // Set via createBoard()
+  @tracked _board: Board | undefined;
   get board() {
     assert('Cannot access _board before it is created', this._board);
-    return this._board.state;
+    return this._board;
+  }
+
+  get currentState() {
+    return this.board.state;
   }
 
   get isStable() {
-    assert('Cannot access _board before it is created', this._board);
     if (!this.previous) return false;
 
-    return this._board.equals(this.previous);
+    return this.board.equals(this.previous);
   }
 
   get previous() {
     return this.history.at(-1);
   }
 
-  passTime = () => this.#snapshot();
   deleteHistory = () => void (this.history.length = 0);
 
   restore = (config: BoardConfig) => {
@@ -76,12 +78,10 @@ export class StateService extends Service {
     }));
   };
 
-  #snapshot = () => {
-    assert('Cannot access _board before it is created', this._board);
+  passTime = () => {
+    const current = this.board.toJSON();
 
-    const current = this._board.toJSON();
-
-    this._board.clearManuallySet();
+    this.board.clearManuallySet();
 
     // this is now "previous"
     this.history.push(current);

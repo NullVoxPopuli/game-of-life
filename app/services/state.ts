@@ -1,6 +1,5 @@
 import Service, { service } from '@ember/service';
 import { registerDestructor } from '@ember/destroyable';
-import { TrackedArray } from 'tracked-built-ins';
 import { assert } from '@ember/debug';
 import { tracked } from '@glimmer/tracking';
 import { Board } from 'life/util/board';
@@ -14,7 +13,7 @@ export class StateService extends Service {
 
   @tracked _board: Board | undefined;
 
-  history = new TrackedArray<State.Board>();
+  @tracked previous: State.Board | undefined;
 
   constructor(owner: Owner) {
     super(owner);
@@ -49,12 +48,7 @@ export class StateService extends Service {
     return this._board.equals(this.previous);
   }
 
-  get previous() {
-    return this.history.at(-1);
-  }
-
-  passTime = () => this.#snapshot();
-  deleteHistory = () => void (this.history.length = 0);
+  deleteHistory = () => void (this.previous = undefined);
 
   restore = (config: BoardConfig) => {
     const board = this.createBoard(config.width, config.height);
@@ -76,21 +70,14 @@ export class StateService extends Service {
     }));
   };
 
-  #snapshot = () => {
+  passTime = () => {
     assert('Cannot access _board before it is created', this._board);
 
     const current = this._board.toJSON();
 
     this._board.clearManuallySet();
 
-    // this is now "previous"
-    this.history.push(current);
-
-    // Removes oldest snapshot (to keep memory under control)
-    // It's possible 20 is too small, these *are* just JSON objects
-    if (this.history.length > 20) {
-      this.history.unshift();
-    }
+    this.previous = current;
   };
 }
 

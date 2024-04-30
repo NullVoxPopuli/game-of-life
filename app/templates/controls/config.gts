@@ -29,14 +29,6 @@ export class Config extends Component {
       </button>
 
       <Size />
-
-      <button type="button" {{on "click" this.display.toggleHistory}}>
-        {{#if this.display.showHistory}}
-          Hide History
-        {{else}}
-          Show History
-        {{/if}}
-      </button>
     </footer>
   </template>
 }

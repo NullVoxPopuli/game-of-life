@@ -17,13 +17,11 @@ module('State', function (hooks) {
     state.passTime();
 
     assert.notEqual(state.previous, undefined);
-    assert.strictEqual(state.history.length, 1);
     assert.deepEqual(state.previous, state._board.toJSON());
 
     state.passTime();
 
     assert.notEqual(state.previous, undefined);
-    assert.strictEqual(state.history.length, 2);
     assert.deepEqual(state.previous, state._board.toJSON());
     assert.deepEqual(state.history[0], state._board.toJSON());
     assert.deepEqual(state.history[1], state._board.toJSON());

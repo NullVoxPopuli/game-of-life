@@ -17,10 +17,6 @@ export class DisplayService extends Service {
     return (this.router.currentRoute?.queryParams ?? {}) as QPs;
   }
 
-  get showHistory() {
-    return this.queryParams['showHistory'] === '1';
-  }
-
   get seed() {
     return String(this.queryParams['seed'] || '');
   }
@@ -79,12 +75,6 @@ export class DisplayService extends Service {
 
   toggleLines = () => this.#setQP({ hideLines: this.hideLines ? '0' : '1' });
   toggleIso = () => this.#setQP({ iso: this.iso ? '0' : '1' });
-
-  toggleHistory = () =>
-    this.#setQP({
-      showHistory: this.showHistory ? '0' : '1',
-      iso: this.showHistory ? boolToBinaryString(this.iso) : '0',
-    });
 
   updateSeed = (board: Board) => {
     this.#setQP({

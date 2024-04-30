@@ -35,7 +35,6 @@ export default class ApplicationRoute extends Route {
     height: { refreshModel: false },
     iso: { refreshModel: false },
     hideLines: { refreshModel: false },
-    showHistory: { refreshModel: false },
     seed: { refreshModel: false },
   };
 

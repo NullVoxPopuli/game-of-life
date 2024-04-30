@@ -29,20 +29,10 @@ export default Route(
 
 const addOne = (n: number) => n + 1;
 
-const scrollToRight = () => {
-  document.body.parentElement?.scrollTo({
-    behavior: 'instant',
-    left: document.body.scrollWidth,
-  });
-};
-
 class Display extends Component {
   @service declare state: StateService;
   @service declare display: DisplayService;
 
-  get isShowingHistory() {
-    return this.display.showHistory;
-  }
   get showLines() {
     return !this.display.hideLines;
   }
@@ -51,19 +41,15 @@ class Display extends Component {
     {{! template-lint-disable style-concatenation }}
     <div
       class="boards
-        {{if this.isShowingHistory 'showing-history'}}
         {{if this.showLines 'show-lines'}}
         "
-      style="--count: {{addOne this.state.history.length}}"
+      style="--count: 1"
     >
-      {{#if this.isShowingHistory}}
-        {{#each this.state.history as |board i|}}
-          <Grid @board={{board}} @index={{addOne i}} class="historical" />
-          {{(scrollToRight)}}
-        {{/each}}
-      {{/if}}
-
-      <Grid @board={{this.state.board}} @index="var(--count)" class={{if this.display.iso "iso"}} />
+      <Grid
+        @board={{this.state.board}}
+        @index="var(--count)"
+        class={{if this.display.iso "iso"}}
+      />
     </div>
   </template>
 }
@@ -74,21 +60,16 @@ const getColumns = (board: State.Board) => {
   return board[0].length;
 };
 
-function isHistoricalCell(cell: State.Cell | ActiveBoardState[0][0]): cell is State.Cell {
-  return !('toggle' in cell);
-}
-
 class Grid extends Component<{
   Element: HTMLDivElement;
   Args: {
-    board: State.Board | ActiveBoardState;
+    board: ActiveBoardState;
     index: string | number;
   };
 }> {
   @service declare display: DisplayService;
 
   <template>
-    {{! template-lint-disable style-concatenation }}
     <div
       class="board"
       style="
@@ -100,12 +81,7 @@ class Grid extends Component<{
     >
       {{#each @board as |row|}}
         {{#each row as |cell|}}
-          {{#if (isHistoricalCell cell)}}
-            <button class={{if cell.alive "alive"}} disabled type="button"></button>
-          {{else}}
-            {{! @glint-expect-error -- glint is wrong and is losing the type on the each }}
-            <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
-          {{/if}}
+          <button class={{if cell.alive "alive"}} onclick={{cell.toggle}} type="button"></button>
         {{/each}}
       {{/each}}
     </div>

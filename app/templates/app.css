@@ -79,6 +79,10 @@ footer.config {
   z-index: 10;
 }
 
+footer.config button[disabled] {
+  opacity: 0.5;
+}
+
 footer input[type="number"] {
   max-width: 50px;
 }
@@ -156,8 +160,8 @@ footer input[type="number"] {
   }
 
   .board {
-    /* transition: all 0.2s; */
-    transition: all 0s;
+     transition: all 0.1s;
+    /*transition: all 0s;*/
 
     /* can't have filter, otherwise preserve-3d breaks */
 
@@ -173,6 +177,7 @@ footer input[type="number"] {
       z-index: 20;
       transform:
         /* centering offset */ translateY(-50%)
+        translateZ(500px)
         translateX(calc(-50% + (2rem * var(--index)))) scale(1.2);
     }
 

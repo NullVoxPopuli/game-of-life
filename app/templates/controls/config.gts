@@ -20,7 +20,7 @@ export class Config extends Component {
         {{/if}}
       </button>
 
-      <button type="button" {{on "click" this.display.toggleIso}}>
+      <button type="button" {{on "click" this.display.toggleIso}} disabled={{this.display.showHistory}}>
         {{#if this.display.iso}}
           Flat
         {{else}}
